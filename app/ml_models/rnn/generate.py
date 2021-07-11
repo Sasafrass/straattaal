@@ -54,8 +54,8 @@ def generate_word(
         return output_name
 
 
-def randomChoice(item):
-    """pick at random from list or string
+def random_choice(item):
+    """Pick at random from list or string.
 
     Args:
         l (str, list): string or list.
