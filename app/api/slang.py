@@ -16,7 +16,6 @@ def generate_slang():
         model=model,
         N_LETTERS=N_LETTERS,
         ALL_LETTERS=ALL_LETTERS,
-        from app.ml_models.rnn.helpers import random_choice
         start_letter=random_choice(ALL_LETTERS),
         maxn=20,  # TODO: Fix this.
         temp=1,  # TODO: Fix the temperature.
