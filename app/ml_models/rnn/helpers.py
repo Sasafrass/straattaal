@@ -6,7 +6,7 @@ def get_input_tensor(line: str, N_LETTERS: int, ALL_LETTERS: set) -> torch.Tenso
 
     Args:
         line: ..
-        N_LETTERS: Number of letters the word should be.
+        N_LETTERS: Number of unique letters found in the training corpus.
         ALL_LETTERS: All letters found in the training data.
     """
     tensor = torch.zeros(len(line), 1, N_LETTERS)
