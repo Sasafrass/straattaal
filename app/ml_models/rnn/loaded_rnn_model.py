@@ -20,10 +20,10 @@ def return_loaded_model():
         all_letters = file.read()
     n_letters = len(all_letters) + 1
 
-    PATH = os.path.join(cwd_path, model_path)
+    final_model_path = os.path.join(cwd_path, model_path)
     # Actually load the model.
     model = RNN(n_letters, n_hidden, n_letters)
-    model.load_state_dict(torch.load(PATH))
+    model.load_state_dict(torch.load(final_model_path))
     model.eval()
 
     return model, all_letters
