@@ -240,3 +240,4 @@ cython_debug/
 
 
 # Own stuff
+app.db # Ignore any SQLite db pushes.
