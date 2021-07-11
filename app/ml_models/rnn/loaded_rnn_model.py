@@ -15,8 +15,8 @@ def return_loaded_model():
     model_path = timestamp + '_straattaal.pth'
     letter_path = timestamp + '_all_letters.txt'
 
-    PATH = os.path.join(cwd_path, letter_path)
-    with open(PATH, 'r') as file:
+    final_letter_path = os.path.join(cwd_path, letter_path)
+    with open(final_letter_path, 'r') as file:
         all_letters = file.read()
     n_letters = len(all_letters) + 1
 
