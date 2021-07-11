@@ -22,14 +22,17 @@ def create_app(config_class=Config):
 
     # Main blueprint.
     from app.main import bp as main_bp
+
     app.register_blueprint(main_bp)
 
     # Authentication blueprint.
     from app.auth import bp as auth_bp
+
     app.register_blueprint(auth_bp, url_prefix="/auth")
 
     # API blueprint.
     from app.api import bp as api_bp
-    app.register_blueprint(api_bp, url_prefix='/api')
+
+    app.register_blueprint(api_bp, url_prefix="/api")
 
     return app

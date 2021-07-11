@@ -1,13 +1,12 @@
 import os
-
+import torch
 from app.ml_models.rnn.rnn_model import RNN
 
-import torch
 
 def return_loaded_model():
     # Variables for trained RNN model.
-    n_hidden = 128
-    n_letters = 27 # TODO: Fix the hardcoded number of letters. 
+    n_hidden = 128  # TODO: Fix the hardcoded hidden dimensionality.
+    n_letters = 27  # TODO: Fix the hardcoded number of letters.
 
     # Construct correct path to model file.
     # TODO: Fix the hardcoded cwd path!
@@ -17,7 +16,7 @@ def return_loaded_model():
     PATH = os.path.join(cwd_path, model_path)
 
     # Actually load the model.
-    model = RNN(n_letters, n_hidden, n_letters) 
+    model = RNN(n_letters, n_hidden, n_letters)
     model.load_state_dict(torch.load(PATH))
     model.eval()
 
