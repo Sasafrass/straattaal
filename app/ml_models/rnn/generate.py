@@ -54,18 +54,6 @@ def generate_word(
         return output_name
 
 
-def random_choice(item):
-    """Pick at random from list or string.
-
-    Args:
-        l (str, list): string or list.
-
-    Returns:
-        [char or item]: if input is a string, a random character will be
-            returned. If a list, a random item is returned
-    """
-    return item[torch.randint(len(item), size=[1])]
-
 # # TODO: Move this piece of code to generate.py?
 # slang_reader = SlangReader()
 # files = slang_reader.find_files("data")
