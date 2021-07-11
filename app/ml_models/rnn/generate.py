@@ -1,5 +1,4 @@
 import torch
-from app.ml_models.rnn.file_readers import SlangReader
 from app.ml_models.rnn.helpers import get_input_tensor
 from app.ml_models.rnn.rnn_model import RNN
 
@@ -10,7 +9,7 @@ def generate_word(
     ALL_LETTERS: set,
     start_letter: str = "a",
     maxn: int = 20,
-    temp: float = 1,
+    temp: float = 0,
 ) -> str:
     """Generate a new Slang word.
 
@@ -32,9 +31,8 @@ def generate_word(
         output_name = start_letter
         for i in range(maxn):
             output, hidden = model(input[0], hidden)
-            if temp != 1:
-                # print("use temp")
-                probs = torch.softmax(output, 1) / temp
+            if torch.distributions.Uniform(0, 1).sample() < temp:
+                probs = torch.softmax(output, 1)
                 dist = torch.distributions.Categorical(probs)
                 pick = dist.sample()
             else:
@@ -48,8 +46,7 @@ def generate_word(
             input = get_input_tensor(
                 letter,
                 N_LETTERS=N_LETTERS,
-                ALL_LETTERS=ALL_LETTERS,
-                )
+                ALL_LETTERS=ALL_LETTERS)
 
         return output_name
 
