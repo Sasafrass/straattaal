@@ -16,7 +16,7 @@ def generate_word(
 
     Args:
         model: Pre-trained Recurrent Neural Network model.
-        N_LETTERS: Number of letters the word should be.
+        N_LETTERS: Number of unique letters found in the training corpus.
         ALL_LETTERS: All letters found in the training data.
         start_letter: Letter to start the word with.
         maxn: Maximum number of letters to be used.

@@ -19,9 +19,9 @@ def generate_slang():
         model=model,
         N_LETTERS=N_LETTERS,
         ALL_LETTERS=ALL_LETTERS,
-        start_letter="a",  # TODO: Fix this to random letter.
+        start_letter="l",  # TODO: Fix this to random letter.
         maxn=20,  # TODO: Fix this.
-        temp=0.1,  # TODO: Fix the temperature.
+        temp=0.5,  # TODO: Fix the temperature.
     )
 
     # TODO: Return a json containing the word.
