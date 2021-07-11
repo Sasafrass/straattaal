@@ -2,7 +2,8 @@ from flask import jsonify
 from app.api import bp
 
 from app.ml_models.rnn.loaded_rnn_model import return_loaded_model
-from app.ml_models.rnn.generate import generate_word, randomChoice
+from app.ml_models.rnn.helpers import random_choice
+from app.ml_models.rnn.generate import generate_word
 
 
 @bp.route("/generate_slang", methods=["GET"])
