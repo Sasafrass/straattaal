@@ -7,4 +7,4 @@ def generate_slang():
     """Generate and return a new slang word."""
     model = return_loaded_model()
     print(model)
-    return "Hello"
+    return "Hello!"
