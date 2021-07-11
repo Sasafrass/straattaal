@@ -8,12 +8,12 @@
     </head>
     <body>
         <div>
-            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('main.index') }}">Home</a>
             {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('auth.login') }}">Login</a>
+            <a href="{{ url_for('auth.register') }}">Register</a>
             {% else %}
-            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
             {% endif %}
         </div>
         <hr>

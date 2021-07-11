@@ -1,14 +1,31 @@
 from flask import Flask
+from config import Config
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from config import Config
 
-app = Flask(__name__)
-app.config.from_object(Config)
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-login = LoginManager(app)
-login.login_view = "login"  # Change to auth.login for blueprints.
+db = SQLAlchemy()
+migrate = Migrate()
+login = LoginManager()
+login.login_view = "auth.login"  # View function that handles the login
+login.login_message = "Please login to access this page."
 
-from app import routes, models
+
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
+
+    # Initialize the Flask extensions.
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login.init_app(app)
+
+    # Authentication blueprint.
+    from app.auth import bp as auth_bp
+    app.register_blueprint(auth_bp, url_prefix="/auth")
+
+    # Main blueprint.
+    from app.main import bp as main_bp
+    app.register_blueprint(main_bp)
+
+    return app
