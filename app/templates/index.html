@@ -6,4 +6,10 @@
     {% else %}
     <h1>Hi, {{ current_user.username }}!</h1>
     {% endif %}
+    <h2>Your new slang word is: </h2>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>{{ form.submit() }}</p>
+    </form>
+    {{ slang_word }}
 {% endblock %}

@@ -1,3 +1,4 @@
+from flask import jsonify
 from app.api import bp
 
 from app.ml_models.rnn.loaded_rnn_model import return_loaded_model
@@ -13,7 +14,7 @@ ALL_LETTERS = (
 def generate_slang():
     """Generate and return a new slang word."""
     model = return_loaded_model()
-    print(model)
+    
     new_word = generate_word(
         model=model,
         N_LETTERS=N_LETTERS,
@@ -24,4 +25,6 @@ def generate_slang():
     )
 
     # TODO: Return a json containing the word.
-    return f"{new_word}!"
+    ret = jsonify(slang_word=new_word)
+
+    return ret
