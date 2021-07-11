@@ -17,5 +17,14 @@ def get_input_tensor(line: str, N_LETTERS: int, ALL_LETTERS: set) -> torch.Tenso
     return tensor
 
 
-def random_choice(l):
-    return l[torch.randint(len(l), size=[1])]
+def random_choice(item):
+    """Pick at random from list or string.
+
+    Args:
+        l (str, list): string or list.
+
+    Returns:
+        [char or item]: if input is a string, a random character will be
+            returned. If a list, a random item is returned
+    """
+    return item[torch.randint(len(item), size=[1])]
