@@ -13,8 +13,8 @@ Instructions on how to run this application locally. If you don't have Postgres 
 ** ```source venv/bin/activate``` to activate your new virtual environment.
 ** ```python -m pip install -r requirements.txt``` or with python3 depending on your Python installation.
 * Or, alternatively, conda:
-** create --name straattaal
-** conda activate straattaal
+** ```conda env create -f environment.yml```
+** ```conda activate straattaal```
 * ```flask db upgrade``` migrate your database to the latest schema.
 * ```flask run```
 * You should now be able to access a fully working local copy at http://localhost:5000
