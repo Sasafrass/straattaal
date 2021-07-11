@@ -18,7 +18,6 @@ def return_loaded_model():
     PATH = os.path.join(cwd_path, letter_path)
     with open(PATH, 'r') as file:
         all_letters = file.read()
-        file.close()
     n_letters = len(all_letters) + 1
 
     PATH = os.path.join(cwd_path, model_path)
