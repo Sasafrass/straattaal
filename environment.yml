@@ -72,4 +72,3 @@ dependencies:
   - zlib=1.2.11=h1de35cc_3
   - pip:
     - setuptools==57.1.0
-prefix: /Users/rgrouls/miniconda3/envs/straattaal
