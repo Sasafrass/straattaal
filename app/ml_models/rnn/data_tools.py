@@ -44,7 +44,7 @@ class WordLevelDataset(Dataset):
 
 
 if __name__ == "__main__":
-    hi = WordLevelDataset('../../../data/', 'Dutch.dic')
+    hi = WordLevelDataset('../../../data/', 'dutch.txt')
     hi_loader = DataLoader(hi, 1)
     for z in hi_loader:
         print(z)
