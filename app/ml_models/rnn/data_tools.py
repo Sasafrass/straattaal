@@ -33,13 +33,12 @@ class WordLevelDataset(Dataset):
         ]
         s2 = [
             self.char_to_idx_dict[z]
-            for z in list(self.words[i]) + (["<EOS>"])
+            for z in list(self.words[i]) + ["<EOS>"]
         ]
         return torch.LongTensor(s1), torch.LongTensor(s2)
 
     def convert_to_string(self, char_ix):
-        result = "".join(self.idx_to_char_dict[ix] for ix in char_ix if self.idx_to_char_dict[ix] not in [
-                         '<BOS>', '<EOS>'])
+        result = "".join(self.idx_to_char_dict[ix] for ix in char_ix)
         return result
 
 
