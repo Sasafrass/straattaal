@@ -15,11 +15,12 @@ def generate_slang():
 
     model, dataset = load_model()
 
+    # TODO: Should check if the word is just memorized
     new_word = generate_word(
         model=model,
         dataset=dataset,
         start_letter='random',
-        max_len=20,  # TODO: Fix this.
+        max_len=20,  # TODO: Fix this. (?)
         temperature=0.3,
     )
 

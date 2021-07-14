@@ -7,12 +7,9 @@ from random import choice as choose
 def next_char(out, temperature):
     # Softmax of the last dimension
     if torch.distributions.Uniform(0, 1).sample() < temperature:
-        probs = torch.softmax((out), -1)  # / temperature
+        probs = torch.softmax((out), -1)
+        #probs = torch.softmax(temperature*(out), -1) # This is good for randomness (temperature < 1)
         choice = torch.multinomial(probs.squeeze(0), 1)
-        # Does same as this I think
-        #probs = torch.softmax(output, 1)
-        #dist = torch.distributions.Categorical(probs)
-        #pick = dist.sample()
     else:
         choice = torch.argmax(out, dim=2)
     return choice
@@ -38,9 +35,10 @@ def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.
         it = 0
 
         # Always generate the Beginning of Word token first and feed it to the RNN
-        idxs = torch.Tensor([dataset.char_to_idx_dict["<BOS>"]]
-                            ).long().unsqueeze(0).to(device)
-        out, h = model(idxs, h)
+        # TODO: Maybe don't ? It results in a lot of copying behaviour for small datasets
+        # idxs = torch.Tensor([dataset.char_to_idx_dict["<BOS>"]]
+        #                     ).long().unsqueeze(0).to(device)
+        # out, h = model(idxs, h)
 
         choice = torch.Tensor([-99])
 
