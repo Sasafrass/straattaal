@@ -28,39 +28,39 @@ def train(rnn,
             optimizer.zero_grad()
             input_line_tensor = input_line_tensor.to(device)
             target_line_tensor = target_line_tensor.to(device)
+            
+            loss = 0
 
-            # loss = 0
-            # print(input_line_tensor.shape,target_line_tensor.shape)
-            # hidden = None
-            # for Z in range(input_line_tensor.size(1)):
-            #     output, hidden = rnn(input_line_tensor[:,Z].unsqueeze(1), hidden)
-            #     l = criterion(output, target_line_tensor[:,Z].unsqueeze(1))
-            #     loss += l
+            hidden = None
+            for Z in range(input_line_tensor.size(1)):
+                # TODO unsqueeze is necessary for batch size 1
+                # Make this generic for larger batch size (it will also be faster on bigger dataset)
+                output, hidden = rnn(input_line_tensor[:,Z].unsqueeze(1), hidden)
+                l = criterion(output.permute(1, 2, 0), target_line_tensor[:,Z].unsqueeze(1).permute(1, 0))
+                loss += l
 
-            output, _ = rnn(input_line_tensor, None)
-            # Rehape in correct shape for crossentropyloss.
-            loss = criterion(output.permute(1, 2, 0),
-                             target_line_tensor.permute(1, 0))
             loss.backward()
             optimizer.step()
             total_loss += loss.item()
-            if (i% 10000) == 0:
+            if ((i+1)% 10000) == 0:
                 for _ in range(10):
                     print('\t', generate_word(
                         rnn, dataset, start_letter="afhklmnopqrstu", temperature=0.3, device=device))
                 rnn.train()
                 
-
-        if epoch % 25 == 0:
+        # TODO plot loss... maybe.... store it somewhere.... im too lazy
+        if epoch % 50 == 0:
             print(total_loss / i)
             for _ in range(10):
                 print('\t', generate_word(
                     rnn, dataset, start_letter="abcdefghijklmnoprstuvwz", temperature=0.3, device=device))
-        torch.save({
-            'epoch': epoch,
-            'model_state_dict': rnn.state_dict(),
-            'optimizer_state_dict': optimizer.state_dict()
-        }, f"statedict_{epoch}.pt")
+
+            # TODO Save this to some generic spot, not just aat cwd...
+            torch.save({
+                'epoch': epoch,
+                'model_state_dict': rnn.state_dict(),
+                'optimizer_state_dict': optimizer.state_dict()
+            }, f"statedict_{epoch}.pt")
 
 
 if __name__ == "__main__":
