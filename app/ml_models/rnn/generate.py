@@ -1,12 +1,12 @@
 import torch
-from helpers import get_input_tensor
-from rnn_model import RNN
+from app.ml_models.rnn.helpers import get_input_tensor
+from app.ml_models.rnn.rnn_model import RNN
 from random import choice as choose
 
 
 def next_char(out, temperature):
     # Softmax of the last dimension
-    if temperature != 0 and torch.distributions.Uniform(0, 1).sample() < temperature:
+    if torch.distributions.Uniform(0, 1).sample() < temperature:
         probs = torch.softmax((out), -1)  # / temperature
         choice = torch.multinomial(probs.squeeze(0), 1)
         # Does same as this I think
@@ -18,7 +18,7 @@ def next_char(out, temperature):
     return choice
 
 
-def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.25):
+def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.25, device='cpu'):
     """Generate a new word.
 
     Args:
@@ -27,6 +27,7 @@ def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.
         start_letter: Letter to start the word with.
         max_len: Maximum number of letters to be used.
         temp: Temperature used for sampling.
+        device: torch device string
     """
     # Evaluation mode
     model.eval()
@@ -37,38 +38,33 @@ def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.
         it = 0
 
         # Always generate the Beginning of Word token first and feed it to the RNN
-        begin_letter = "<BOS>"
-        idxs = [dataset.char_to_idx_dict[begin_letter]]
-        out, h = model(torch.Tensor(idxs).long().unsqueeze(0), h)
+        idxs = torch.Tensor([dataset.char_to_idx_dict["<BOS>"]]
+                            ).long().unsqueeze(0).to(device)
+        out, h = model(idxs, h)
 
         choice = torch.Tensor([-99])
 
-        # Generate or feed the next character
+        # Generate a random choice from the vocabulary and put it in the to-be-fed IDXs
         if start_letter == 'random':
-            # Generate a random choice from the vocabulary and put it in the to-be-fed IDXs
-            idxs = [dataset.char_to_idx_dict[choose(dataset.vocabulary)]]
-            letters_idx = torch.Tensor(idxs).long().unsqueeze(0)
+            letters_idx = torch.Tensor(
+                [dataset.char_to_idx_dict[choose(dataset.vocabulary)]]
+            ).long().unsqueeze(0).to(device)
+
+        # Generate a random choice from the input
         elif start_letter is not None:
-            if len(start_letter) == 1:
-                # Put the given letter in the to-be-fed IDXS
-                idxs = [dataset.char_to_idx_dict[start_letter]]
-                letters_idx = torch.Tensor(idxs).long().unsqueeze(0)
-            else:
-                idxs = [dataset.char_to_idx_dict[choose(start_letter)]]
-                letters_idx = torch.Tensor(idxs).long().unsqueeze(0)
+            letters_idx = torch.Tensor(
+                [dataset.char_to_idx_dict[choose(start_letter)]]
+            ).long().unsqueeze(0).to(device)
+
+        # Let the RNN decide for this first round.
         else:
-            # Let the RNN decide for this first round.
             choice = next_char(out, temperature)
-            letters_idx = choice
+            letters_idx = choice.to(device)
 
         while choice.item() != dataset.char_to_idx_dict["<EOS>"] and it < max_len:
             # Pass the latest character to the model, store new hidden stuff.
             out, h = model(letters_idx[it:], h)
-
-            # This is the relevant char (the last one)
-            out = out[-1, :, :].unsqueeze(0)
             choice = next_char(out, temperature)
-
             letters_idx = torch.cat((letters_idx, choice), 0)
             it += 1
 
