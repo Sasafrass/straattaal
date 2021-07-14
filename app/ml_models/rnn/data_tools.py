@@ -3,6 +3,7 @@ import os
 from torch.utils.data import Dataset, DataLoader
 from collections import Counter
 
+
 class WordLevelDataset(Dataset):
     def __init__(self,
                  prefix: str = '../../../data/',
@@ -13,13 +14,12 @@ class WordLevelDataset(Dataset):
 
         with open(filename_dataset, 'r', encoding='utf-8') as f:
             lines = f.read().strip().lower()
-            self.words = [s.strip().replace('\t','') for s in lines.split("\n")]
+            self.words = [s.strip().replace('\t', '')
+                          for s in lines.split("\n")]
         with open(filename_vocab, 'r', encoding='utf-8') as f:
             self.vocabulary = list(f.read())
         self.vocabulary += ['<BOS>', '<EOS>']
         self.vocabulary_size = len(self.vocabulary)
-
-        print("Vocabulary", self.vocabulary)
         self.char_to_idx_dict = {ch: i for i, ch in enumerate(self.vocabulary)}
         self.idx_to_char_dict = {i: ch for i, ch in enumerate(self.vocabulary)}
 
