@@ -61,6 +61,7 @@ def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.
             choice = next_char(out, temperature)
             letters_idx = choice.to(device)
 
+        # Check if the token is an EOS token.
         while choice.item() != dataset.char_to_idx_dict["<EOS>"] and it < max_len:
             # Pass the latest character to the model, store new hidden stuff.
             out, h = model(letters_idx[it:], h)
