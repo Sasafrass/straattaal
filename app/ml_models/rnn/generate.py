@@ -47,7 +47,7 @@ def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.
         # Generate a random choice from the vocabulary and put it in the to-be-fed IDXs
         if start_letter == 'random':
             letters_idx = torch.Tensor(
-                [dataset.char_to_idx_dict[choose(dataset.vocabulary)]]
+                [dataset.char_to_idx_dict[choose("abcdefghijklmnopqrstuvwxyz")]]
             ).long().unsqueeze(0).to(device)
 
         # Generate a random choice from the input
@@ -70,7 +70,7 @@ def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.
             it += 1
 
         output_string = letters_idx.squeeze(1).tolist()
-    return dataset.convert_to_string(output_string)
+    return dataset.convert_to_string(output_string).split('<EOS>')[0]
 
 
 # # TODO: Move this piece of code to generate.py?
