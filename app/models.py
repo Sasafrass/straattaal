@@ -5,9 +5,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 # Create many-to-many mapping from groups to users using a helper table.
 groups = db.Table(
-    'groups',
+    "groups",
     db.Column("group_id", db.Integer, db.ForeignKey("group.id"), primary_key=True),
-    db.Column("user_id", db.Integer, db.ForeignKey("user.id"), primary_key=True),    
+    db.Column("user_id", db.Integer, db.ForeignKey("user.id"), primary_key=True),
 )
 
 
@@ -18,8 +18,8 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     words = db.relationship("Slang", backref="author", lazy="dynamic")
     groups = db.relationship(
-        "Group", 
-        secondary=groups, 
+        "Group",
+        secondary=groups,
         lazy="subquery",
         backref=db.backref("groups", lazy=True),
         overlaps="users, groups",
@@ -49,8 +49,8 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
     users = db.relationship(
-        "User", 
-        secondary=groups, 
+        "User",
+        secondary=groups,
         lazy="subquery",
         backref=db.backref("users", lazy=True),
         overlaps="groups, users",

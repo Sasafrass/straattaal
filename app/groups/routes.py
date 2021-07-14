@@ -5,6 +5,7 @@ from app import db
 from app.models import Group
 from app.groups import bp
 
+
 @bp.route("/main", methods=["GET"])
 @login_required
 def groups():
@@ -26,11 +27,11 @@ def create():
         db.session.commit()
 
         # TODO: Find the newly added corresponding group id.
-        # TODO: Add user id and group id to groups table? 
+        # TODO: Add user id and group id to groups table?
         # TODO: Or should that be done automatically with foreign key mapping?
 
         # TODO: Redirect to the new group page
-        #return redirect(url_for("groups.groups"))
+        # return redirect(url_for("groups.groups"))
 
         return redirect(url_for("groups.groups"))
 

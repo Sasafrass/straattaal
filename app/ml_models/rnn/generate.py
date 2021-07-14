@@ -44,9 +44,8 @@ def generate_word(
                 letter = ALL_LETTERS[pick]
                 output_name += letter
             input = get_input_tensor(
-                letter,
-                N_LETTERS=N_LETTERS,
-                ALL_LETTERS=ALL_LETTERS)
+                letter, N_LETTERS=N_LETTERS, ALL_LETTERS=ALL_LETTERS
+            )
 
         return output_name
 

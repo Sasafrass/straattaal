@@ -11,12 +11,12 @@ def return_loaded_model():
     # TODO: Fix the hardcoded cwd path!
     cwd_path = os.path.abspath(os.getcwd())
     cwd_path = os.path.join(cwd_path, "app", "ml_models", "rnn")
-    timestamp = '2019-11072021'
-    model_path = timestamp + '_straattaal.pth'
-    letter_path = timestamp + '_all_letters.txt'
+    timestamp = "2019-11072021"
+    model_path = timestamp + "_straattaal.pth"
+    letter_path = timestamp + "_all_letters.txt"
 
     final_letter_path = os.path.join(cwd_path, letter_path)
-    with open(final_letter_path, 'r') as file:
+    with open(final_letter_path, "r") as file:
         all_letters = file.read()
     n_letters = len(all_letters) + 1
 
