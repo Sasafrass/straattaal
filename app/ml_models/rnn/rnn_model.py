@@ -30,18 +30,20 @@ class RNNAnna(nn.Module):
     def __init__(
         self,
         vocab_size,
-        embedding_dim,
         hidden_size,
         train_embeddings=False,
     ):
         super(RNNAnna, self).__init__()
-        self._embedding = nn.Embedding(vocab_size, embedding_dim)
+        self._embedding = nn.Embedding(vocab_size, vocab_size)
+        self._embedding.weight.data = torch.eye(vocab_size)
         self._embedding.weight.requires_grad = train_embeddings
-        self.lstm = nn.RNN(embedding_dim, hidden_size, 1, batch_first=False)
+
+        self.lstm = nn.RNN(vocab_size, hidden_size, 1, batch_first=False)
+        self.dropout = nn.Dropout(0.1)
         self.final = nn.Linear(hidden_size, vocab_size)
         self.hidden_size = hidden_size
 
     def forward(self, x, hidden=None):
         x = self._embedding(x)
         out, hidden = self.lstm(x, hidden)
-        return self.final(out), hidden
+        return self.final(self.dropout(out)), hidden
