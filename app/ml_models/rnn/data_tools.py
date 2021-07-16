@@ -6,6 +6,13 @@ from collections import Counter
 
 class WordLevelDataset(Dataset):
     def __init__(self,
+        """Initialize a WordLevelDataset object.
+        
+        Args:
+            prefix: The prefix to the folder containing the dataset.
+            filename_dataset: Full filename of dataset to be appended to the prefix.
+            filename_vocab: Full filename of vocabulary to be appended to the prefix.
+        """
                  prefix: str = '../../../data/',
                  filename_dataset: str = 'straattaal.txt',
                  filename_vocab: str = 'vocabulary.txt'):
