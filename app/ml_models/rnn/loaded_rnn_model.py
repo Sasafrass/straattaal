@@ -6,9 +6,9 @@ from app.ml_models.rnn.data_tools import WordLevelDataset
 
 def load_model(model_name: str = '2021_straattaal_epoch100.pt', device: str = 'cpu'):
     """
-    Args
-        model_name: Filename of the model
-        device: CUDA device name to map to, probably cpu
+    Args:
+        model_name: Filename of the model.
+        device: CUDA device name to map to, probably cpu.
     """
     path = os.path.join(os.path.abspath(os.getcwd()),
                         "app", "ml_models", "rnn")
