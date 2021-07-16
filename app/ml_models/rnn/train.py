@@ -39,13 +39,13 @@ def train(rnn,
             # Run model ye new way
             loss = 0
             hidden = None
-            for Z in range(input_line_tensor.size(1)):
+            for char_pos in range(input_line_tensor.size(1)):
                 # TODO unsqueeze is necessary for batch size 1
                 # Make this generic for larger batch size (it will also be faster on bigger dataset)
                 output, hidden = rnn(
-                    input_line_tensor[:, Z].unsqueeze(1), hidden)
+                    input_line_tensor[:, char_pos].unsqueeze(1), hidden)
                 l = criterion(output.permute(
-                    1, 2, 0), target_line_tensor[:, Z].unsqueeze(1).permute(1, 0))
+                    1, 2, 0), target_line_tensor[:, char_pos].unsqueeze(1).permute(1, 0))
                 loss += l
 
             loss.backward()
