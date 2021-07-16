@@ -3,8 +3,16 @@ import os
 from torch.utils.data import Dataset, DataLoader
 from collections import Counter
 
+
 class WordLevelDataset(Dataset):
     def __init__(self,
+        """Initialize a WordLevelDataset object.
+        
+        Args:
+            prefix: The prefix to the folder containing the dataset.
+            filename_dataset: Full filename of dataset to be appended to the prefix.
+            filename_vocab: Full filename of vocabulary to be appended to the prefix.
+        """
                  prefix: str = '../../../data/',
                  filename_dataset: str = 'straattaal.txt',
                  filename_vocab: str = 'vocabulary.txt'):
@@ -13,13 +21,12 @@ class WordLevelDataset(Dataset):
 
         with open(filename_dataset, 'r', encoding='utf-8') as f:
             lines = f.read().strip().lower()
-            self.words = [s.strip().replace('\t','') for s in lines.split("\n")]
+            self.words = [s.strip().replace('\t', '')
+                          for s in lines.split("\n")]
         with open(filename_vocab, 'r', encoding='utf-8') as f:
             self.vocabulary = list(f.read())
         self.vocabulary += ['<BOS>', '<EOS>']
         self.vocabulary_size = len(self.vocabulary)
-
-        print("Vocabulary", self.vocabulary)
         self.char_to_idx_dict = {ch: i for i, ch in enumerate(self.vocabulary)}
         self.idx_to_char_dict = {i: ch for i, ch in enumerate(self.vocabulary)}
 
@@ -33,13 +40,12 @@ class WordLevelDataset(Dataset):
         ]
         s2 = [
             self.char_to_idx_dict[z]
-            for z in list(self.words[i]) + (["<EOS>"])
+            for z in list(self.words[i]) + ["<EOS>"]
         ]
         return torch.LongTensor(s1), torch.LongTensor(s2)
 
     def convert_to_string(self, char_ix):
-        result = "".join(self.idx_to_char_dict[ix] for ix in char_ix if self.idx_to_char_dict[ix] not in [
-                         '<BOS>', '<EOS>'])
+        result = "".join(self.idx_to_char_dict[ix] for ix in char_ix)
         return result
 
 
