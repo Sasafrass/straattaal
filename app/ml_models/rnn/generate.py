@@ -5,10 +5,16 @@ from random import choice as choose
 
 
 def next_char(out, temperature):
+    """Sample the next character in the word.
+
+    Args:
+        out: Tensor of shape (hidden_size x voc_size), pre-softmax output of the recurrent model at the current step.
+        temperature: Temperature for non-argmax sampling.
+    """
     # Softmax of the last dimension
     if torch.distributions.Uniform(0, 1).sample() < temperature:
         probs = torch.softmax((out), -1)
-        #probs = torch.softmax(temperature*(out), -1) # This is good for randomness (temperature < 1)
+        # probs = torch.softmax(temperature*(out), -1) # This is good for randomness (temperature < 1)
         choice = torch.multinomial(probs.squeeze(0), 1)
     else:
         choice = torch.argmax(out, dim=2)
