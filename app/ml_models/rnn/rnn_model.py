@@ -33,6 +33,13 @@ class RNNAnna(nn.Module):
         hidden_size,
         train_embeddings=False,
     ):
+        """Initialize an RNNAnna model. Improved take on a traditional RNN.
+        
+        Args:
+            vocab_size: Size of the vocabulary to be used.
+            hidden_size: Number of units in the hidden layer.
+            train_embeddings: Whether we train actual embeddings (or use One-Hot encoding instead -> Please verify)
+        """
         super(RNNAnna, self).__init__()
         self._embedding = nn.Embedding(vocab_size, vocab_size)
         self._embedding.weight.data = torch.eye(vocab_size)
