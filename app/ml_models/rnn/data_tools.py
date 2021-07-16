@@ -6,6 +6,9 @@ from collections import Counter
 
 class WordLevelDataset(Dataset):
     def __init__(self,
+                 prefix: str = '../../../data/',
+                 filename_dataset: str = 'straattaal.txt',
+                 filename_vocab: str = 'vocabulary.txt'):
         """Initialize a WordLevelDataset object.
         
         Args:
@@ -13,9 +16,6 @@ class WordLevelDataset(Dataset):
             filename_dataset: Full filename of dataset to be appended to the prefix.
             filename_vocab: Full filename of vocabulary to be appended to the prefix.
         """
-                 prefix: str = '../../../data/',
-                 filename_dataset: str = 'straattaal.txt',
-                 filename_vocab: str = 'vocabulary.txt'):
         filename_dataset = os.path.join(prefix, filename_dataset)
         filename_vocab = os.path.join(prefix, filename_vocab)
 
@@ -59,10 +59,3 @@ class WordLevelDataset(Dataset):
         result = "".join(self.idx_to_char_dict[ix] for ix in char_ix)
         return result
 
-
-if __name__ == "__main__":
-    hi = WordLevelDataset('../../../data/', 'dutch.txt')
-    hi_loader = DataLoader(hi, 1)
-    for z in hi_loader:
-        print(z)
-        break
