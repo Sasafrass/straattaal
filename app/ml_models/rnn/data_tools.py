@@ -34,6 +34,11 @@ class WordLevelDataset(Dataset):
         return len(self.words)
 
     def __getitem__(self, i):
+        """Override Torch DataLoader function to return a single datapoint.
+        
+        Args:
+            i: The index to the desired element.
+        """
         s1 = [
             self.char_to_idx_dict[z]
             for z in ["<BOS>"] + list(self.words[i])
