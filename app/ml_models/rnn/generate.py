@@ -1,6 +1,6 @@
 import torch
-from helpers import get_input_tensor
-from rnn_model import RNN
+from app.ml_models.rnn.helpers import get_input_tensor
+from app.ml_models.rnn.rnn_model import RNN
 from random import choice as choose
 
 
