@@ -42,16 +42,17 @@ def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.
 
         # Always generate the Beginning of Word token first and feed it to the RNN
         # TODO: Maybe don't ? It results in a lot of copying behaviour for small datasets
-        # idxs = torch.Tensor([dataset.char_to_idx_dict["<BOS>"]]
-        #                     ).long().unsqueeze(0).to(device)
-        # out, h = model(idxs, h)
+        idxs = torch.Tensor([dataset.char_to_idx_dict["<BOS>"]]
+                            ).long().unsqueeze(0).to(device)
+        out, h = model(idxs, h)
 
         choice = torch.Tensor([-99])
 
         # Generate a random choice from the vocabulary and put it in the to-be-fed IDXs
         if start_letter == 'random':
             letters_idx = torch.Tensor(
-                [dataset.char_to_idx_dict[choose("abcdefghijklmnopqrstuvwxyz")]]
+                [dataset.char_to_idx_dict[choose(
+                    "abcdefghijklmnopqrstuvwxyz")]]
             ).long().unsqueeze(0).to(device)
 
         # Generate a random choice from the input
