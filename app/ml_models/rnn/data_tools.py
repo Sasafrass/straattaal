@@ -50,6 +50,12 @@ class WordLevelDataset(Dataset):
         return torch.LongTensor(s1), torch.LongTensor(s2)
 
     def convert_to_string(self, char_ix):
+        """Convert an indexed representation of the characters to the actual characters.
+        
+        Args:
+            char_ix: ?Iterable? with indices that represent characters.
+        """  
+        
         result = "".join(self.idx_to_char_dict[ix] for ix in char_ix)
         return result
 
