@@ -3,7 +3,7 @@ from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-# Create many-to-many mapping from groups to users using a helper table.
+# Create many-to-many mapping from groups to users using an association table.
 groups = db.Table(
     "groups",
     db.Column("group_id", db.Integer, db.ForeignKey("group.id"), primary_key=True),
