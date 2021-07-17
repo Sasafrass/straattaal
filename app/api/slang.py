@@ -1,8 +1,7 @@
 from flask import jsonify
 from app.api import bp
 
-from app.ml_models.rnn.loaded_rnn_model import return_loaded_model, load_model
-from app.ml_models.rnn.helpers import random_choice
+from app.ml_models.rnn.loaded_rnn_model import load_model
 from app.ml_models.rnn.generate import generate_word
 
 
@@ -19,7 +18,7 @@ def generate_slang():
     new_word = generate_word(
         model=model,
         dataset=dataset,
-        start_letter='random',
+        start_letter="random",
         max_len=20,  # TODO: Fix this. (?)
         temperature=0.3,
     )
