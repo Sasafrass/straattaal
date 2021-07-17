@@ -17,6 +17,6 @@ class SlangReader:
     def read_lines(self, filename):
         lines = open(filename, encoding="utf-8").read().strip().split("\n")
         lines = [s.lower() for s in lines]
-        lines = [re.sub("[\t\s]", "", s) for s in lines]
+        lines = [re.sub(r"[\t\s]", "", s) for s in lines]
 
         return lines
