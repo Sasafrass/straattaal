@@ -1,6 +1,4 @@
 import torch
-from app.ml_models.rnn.helpers import get_input_tensor
-from app.ml_models.rnn.rnn_model import RNN
 from random import choice as choose
 
 
@@ -21,12 +19,14 @@ def next_char(out, temperature):
     return choice
 
 
-def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.25, device='cpu'):
+def generate_word(
+    model, dataset, start_letter=None, max_len=20, temperature=0.25, device="cpu"
+):
     """Generate a new word.
 
     Args:
         model: Pre-trained Recurrent Neural Network model.
-        dataset: WordLevelDataset object 
+        dataset: WordLevelDataset object
         start_letter: Letter to start the word with.
         max_len: Maximum number of letters to be used.
         temp: Temperature used for sampling.
@@ -42,24 +42,35 @@ def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.
 
         # Always generate the Beginning of Word token first and feed it to the RNN
         # TODO: Maybe don't ? It results in a lot of copying behaviour for small datasets
-        idxs = torch.Tensor([dataset.char_to_idx_dict["<BOS>"]]
-                            ).long().unsqueeze(0).to(device)
+        idxs = (
+            torch.Tensor([dataset.char_to_idx_dict["<BOS>"]])
+            .long()
+            .unsqueeze(0)
+            .to(device)
+        )
         out, h = model(idxs, h)
 
         choice = torch.Tensor([-99])
 
         # Generate a random choice from the vocabulary and put it in the to-be-fed IDXs
-        if start_letter == 'random':
-            letters_idx = torch.Tensor(
-                [dataset.char_to_idx_dict[choose(
-                    "abcdefghijklmnopqrstuvwxyz")]]
-            ).long().unsqueeze(0).to(device)
+        if start_letter == "random":
+            letters_idx = (
+                torch.Tensor(
+                    [dataset.char_to_idx_dict[choose("abcdefghijklmnopqrstuvwxyz")]]
+                )
+                .long()
+                .unsqueeze(0)
+                .to(device)
+            )
 
         # Generate a random choice from the input
         elif start_letter is not None:
-            letters_idx = torch.Tensor(
-                [dataset.char_to_idx_dict[choose(start_letter)]]
-            ).long().unsqueeze(0).to(device)
+            letters_idx = (
+                torch.Tensor([dataset.char_to_idx_dict[choose(start_letter)]])
+                .long()
+                .unsqueeze(0)
+                .to(device)
+            )
 
         # Let the RNN decide for this first round.
         else:
@@ -75,7 +86,7 @@ def generate_word(model, dataset, start_letter=None,  max_len=20, temperature=0.
             it += 1
 
         output_string = letters_idx.squeeze(1).tolist()
-    return dataset.convert_to_string(output_string).split('<EOS>')[0]
+    return dataset.convert_to_string(output_string).split("<EOS>")[0]
 
 
 # # TODO: Move this piece of code to generate.py?
