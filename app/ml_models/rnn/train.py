@@ -9,15 +9,26 @@ from app.ml_models.rnn.generate import generate_word
 
 
 def train(rnn,
-          dataloader,
-          dataset,
-          learning_rate=0.0005,
-          epochs=500,
-          device='cpu',
-          name='straattaal',
-          save_every=50,
-          print_every=10000):
-
+          dataloader: torch.utils.data.DataLoader,
+          dataset: torch.utils.data.Dataset,
+          learning_rate: float = 0.0005,
+          epochs: int = 500,
+          device: str = 'cpu',
+          name: str = 'straattaal',
+          save_every: int = 50,
+          print_every: int = 10000):
+    """Train a full RNN model.
+        
+        Args:
+            dataloader: Pytorch dataloader to iterate over the dataset.
+            dataset: Dataset to be used for training and to generate a word.
+            learning_rate: Learning rate to be used for training the model.
+            epochs: Number of epochs to run our dataloader for.
+            device: Device on which to run our model. Default is 'cpu', but can be set to GPU if one is available.
+            name: Name to be used for the saved model.
+            save_every: After every multitude of this number we save a version of the model.
+            print_every: After every multitude of this number we print the loss.
+        """
     # With CrossEntropyLoss we don't need (manual) one-hot
     criterion = nn.CrossEntropyLoss()
 
