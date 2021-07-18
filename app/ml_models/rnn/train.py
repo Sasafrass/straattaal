@@ -1,11 +1,11 @@
-import torch.nn as nn
 import torch
+import torch.nn as nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from app.ml_models.rnn.data_tools import WordLevelDataset
-from app.ml_models.rnn.rnn_model import RNNAnna
 from app.ml_models.rnn.generate import generate_word
+from app.ml_models.rnn.rnn_model import RNNAnna
 
 
 def train(
@@ -75,9 +75,8 @@ def train(
                         "\t",
                         generate_word(
                             rnn,
-                            dataset,
-                            # TODO ? Why not the full set of letters?
-                            start_letter="afhklmnopqrstu",
+                            dataset.vocabulary,
+                            start_letter="random",
                             temperature=0.3,
                             device=device,
                         ),
@@ -92,9 +91,8 @@ def train(
                     "\t",
                     generate_word(
                         rnn,
-                        dataset,
-                        # TODO ? Why not the full set of letters?
-                        start_letter="abcdefghijklmnoprstuvwz",
+                        dataset.vocabulary,
+                        start_letter="random",
                         temperature=0.3,
                         device=device,
                     ),
@@ -112,9 +110,12 @@ def train(
 
 
 if __name__ == "__main__":
-    hi = WordLevelDataset("../../../data/", "straattaal.txt")
+
+    dataset = WordLevelDataset(
+        prefix="../../../data/", filename_datasets=["straattaal.txt"]
+    )
 
     # Currently only batch size 1 works
-    hi_loader = DataLoader(hi, 1, shuffle=True)
-    rnn = RNNAnna(hi.vocabulary_size, 64, 128)
-    train(rnn, hi_loader, hi)
+    train_loader = DataLoader(dataset, 1, shuffle=True)
+    rnn = RNNAnna(dataset.vocabulary_size, 64, 128)
+    train(rnn, train_loader, dataset)

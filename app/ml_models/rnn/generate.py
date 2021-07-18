@@ -1,5 +1,6 @@
-import torch
 from random import choice as choose
+
+import torch
 
 
 def next_char(out, temperature):
@@ -20,14 +21,17 @@ def next_char(out, temperature):
 
 
 def generate_word(
-    model, dataset, start_letter=None, max_len=20, temperature=0.25, device="cpu"
+    model, vocabulary, start_letter=None, max_len=20, temperature=0.25, device="cpu"
 ):
     """Generate a new word.
 
     Args:
         model: Pre-trained Recurrent Neural Network model.
-        dataset: WordLevelDataset object
-        start_letter: Letter to start the word with.
+        vocabulary: Vocabulary object (see vocabulary.py).
+        start_letter: (Set of) letter(s) to start the word with.
+                      If set to a single letter, start the word with that letter.
+                      If set to "random", a random letter from the vocabulary object will be chosen.
+                      If it consists of several letters, one of the letters will be chosen.
         max_len: Maximum number of letters to be used.
         temp: Temperature used for sampling.
         device: torch device string
@@ -41,9 +45,8 @@ def generate_word(
         it = 0
 
         # Always generate the Beginning of Word token first and feed it to the RNN
-        # TODO: Maybe don't ? It results in a lot of copying behaviour for small datasets
         idxs = (
-            torch.Tensor([dataset.char_to_idx_dict["<BOS>"]])
+            torch.Tensor([vocabulary.char_to_idx_dict["<BOS>"]])
             .long()
             .unsqueeze(0)
             .to(device)
@@ -57,7 +60,7 @@ def generate_word(
         if start_letter == "random":
             letters_idx = (
                 torch.Tensor(
-                    [dataset.char_to_idx_dict[choose("abcdefghijklmnopqrstuvwxyz")]]
+                    [vocabulary.char_to_idx_dict[choose("abcdefghijklmnopqrstuvwxyz")]]
                 )
                 .long()
                 .unsqueeze(0)
@@ -66,8 +69,9 @@ def generate_word(
 
         # Generate a random choice from the input
         elif start_letter is not None:
+            # TODO Should be able to start with a string, not just single letter. (Give user the option to choose between behaviours)
             letters_idx = (
-                torch.Tensor([dataset.char_to_idx_dict[choose(start_letter)]])
+                torch.Tensor([vocabulary.char_to_idx_dict[choose(start_letter)]])
                 .long()
                 .unsqueeze(0)
                 .to(device)
@@ -79,7 +83,7 @@ def generate_word(
             letters_idx = choice.to(device)
 
         # Check if the token is an EOS token.
-        while choice.item() != dataset.char_to_idx_dict["<EOS>"] and it < max_len:
+        while choice.item() != vocabulary.char_to_idx_dict["<EOS>"] and it < max_len:
             # Pass the latest character to the model, store new hidden stuff.
             out, h = model(letters_idx[it:], h)
             choice = next_char(out, temperature)
@@ -87,13 +91,4 @@ def generate_word(
             it += 1
 
         output_string = letters_idx.squeeze(1).tolist()
-    return dataset.convert_to_string(output_string).split("<EOS>")[0]
-
-
-# # TODO: Move this piece of code to generate.py?
-# slang_reader = SlangReader()
-# files = slang_reader.find_files("data")
-# for filename in files:
-#     # TODO: This will end up only parsing a single file anyways.
-#     # TODO: Either concatenate those or rewrite to specific file.
-#     lines = slang_reader.read_lines(filename)
+    return vocabulary.convert_to_string(output_string).split("<EOS>")[0]

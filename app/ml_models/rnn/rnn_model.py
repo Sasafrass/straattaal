@@ -31,20 +31,27 @@ class RNNAnna(nn.Module):
         vocab_size: int,
         hidden_size: int,
         train_embeddings: bool = False,
+        embedding_size: int = None,
     ):
-        """Initialize an RNNAnna model. Improved take on a traditional RNN.
+        """Initialize an single-layer RNNAnna model. Improved take on a traditional RNN.
 
         Args:
             vocab_size: Size of the vocabulary to be used.
             hidden_size: Number of units in the hidden layer.
-            train_embeddings: Whether we train actual embeddings (or use One-Hot encoding instead -> Please verify)
+            train_embeddings: Whether to train the actual embeddings
+            embedding_size: Number of units for the (character) embeddings. One-hot embeddings are used by default if embedding_size=None.
         """
         super(RNNAnna, self).__init__()
-        self._embedding = nn.Embedding(vocab_size, vocab_size)
-        self._embedding.weight.data = torch.eye(vocab_size)
-        self._embedding.weight.requires_grad = train_embeddings
 
-        self.lstm = nn.RNN(vocab_size, hidden_size, 1, batch_first=False)
+        if embedding_size is None:
+            self._embedding = nn.Embedding(vocab_size, vocab_size)
+            self._embedding.weight.data = torch.eye(vocab_size)
+            self.lstm = nn.RNN(vocab_size, hidden_size, 1, batch_first=False)
+        else:
+            self._embedding = nn.Embedding(vocab_size, embedding_size)
+            self.lstm = nn.RNN(embedding_size, hidden_size, 1, batch_first=False)
+
+        self._embedding.weight.requires_grad = train_embeddings
         self.dropout = nn.Dropout(0.1)
         self.final = nn.Linear(hidden_size, vocab_size)
         self.hidden_size = hidden_size

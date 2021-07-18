@@ -1,24 +1,46 @@
 import os
+
 import torch
+
+from app.ml_models.rnn.vocabulary import Vocabulary
 from app.ml_models.rnn.rnn_model import RNN, RNNAnna
-from app.ml_models.rnn.data_tools import WordLevelDataset
 
 
-def load_model(model_name: str = "2021_straattaal_epoch100.pt", device: str = "cpu"):
+def load_model(
+    filename_model: str = "2021_straattaal_epoch100.pt",
+    filename_vocab: str = "vocabulary.txt",
+    device: str = "cpu",
+):
     """
+    From a given path for filename of the model and the vocabulary, loads a model and vocabulary for inference.
+    The vocabulary size should be the same as the model vocabulary size, otherwise an error is thrown.
+
     Args:
         model_name: Filename of the model.
-        device: CUDA device name to map to, probably cpu.
+        filename_vocab: Filename of the vocabulary.
+        device: CUDA device name to map to, probably 'cpu'.
     """
     path = os.path.join(os.path.abspath(os.getcwd()), "app", "ml_models", "rnn")
-    path = os.path.join(path, model_name)
-    dataset = WordLevelDataset("data/", "straattaal.txt")
-    # TODO: Fix hardcoded hidden size
-    m = RNNAnna(dataset.vocabulary_size, 128)
-    checkpoint = torch.load(path, map_location=torch.device(device))
-    m.load_state_dict(checkpoint["model_state_dict"])
+    path_model = os.path.join(path, filename_model)
+    path_vocab = os.path.join(os.path.abspath(os.getcwd()), "data", filename_vocab)
+
+    v = Vocabulary()
+    v.load(prefix=".", filename_vocab=path_vocab)
+
+    checkpoint = torch.load(path_model, map_location=torch.device(device))
+    checkpoint_model = checkpoint["model_state_dict"]
+    model_vocab_size, embedding_size = checkpoint_model["_embedding.weight"].shape
+
+    # Will work for single-layer RNNs for now.
+    hidden_size = checkpoint_model["lstm.bias_hh_l0"].shape[0]
+    if embedding_size != v.size:
+        raise ValueError(
+            f"Model vocab size {model_vocab_size} does not match vocabulary file size {v.size}"
+        )
+    m = RNNAnna(v.size, hidden_size, embedding_size=embedding_size)
+    m.load_state_dict(checkpoint_model)
     m.eval()
-    return m, dataset
+    return m, v
 
 
 def return_loaded_model():
