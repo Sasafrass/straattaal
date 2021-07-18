@@ -1,10 +1,13 @@
 import requests
 from flask import render_template
+from flask_login import login_required, current_user
 from app import db
 from app.main import bp
 from app.main.forms import GenerateSlangForm, MeaningForm
+from app.models import Slang
 
 
+@login_required
 @bp.route("/", methods=["GET", "POST"])
 @bp.route("/index", methods=["GET", "POST"])
 def index():
@@ -32,6 +35,16 @@ def index():
 
     if meaning_form.submit_meaning.data and meaning_form.validate():
         print("Successfully submitted the meaning form")
+
+        # Persist word and meaning to database.
+        user_id = current_user.get_id()
+        word_and_meaning = Slang(
+            word=meaning_form.word.data, 
+            meaning=meaning_form.meaning.data,
+            user_id=user_id,
+            )
+        db.session.add(word_and_meaning)
+        db.session.commit()
 
         return render_template(
             "index.html", 
