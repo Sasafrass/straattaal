@@ -15,8 +15,7 @@ class WordLevelDataset(Dataset):
         vocabulary: Vocabulary = None,
         filename_vocab: str = "vocabulary.txt",
     ):
-        """
-        Initialize a WordLevelDataset object and accompanying Vocabulary object if necessary.
+        """Initialize a WordLevelDataset object and accompanying Vocabulary object if necessary.
 
         Args:
             prefix: The prefix to the folder containing the dataset.
