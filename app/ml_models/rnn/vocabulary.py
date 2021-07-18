@@ -5,7 +5,7 @@ class Vocabulary:
     def build(
         self,
         prefix: str = "../../../data/",
-        filename_source: str = "dutch.txt",
+        filename_source: str = "dutch.txt", # TODO also fread from multiple files if necessary
         filename_destination: str = "dutch_vocab.txt",
         overwrite: bool = False,
         lower: bool = True,
