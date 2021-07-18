@@ -1,7 +1,9 @@
 import os
+
 import torch
-from app.ml_models.rnn.rnn_model import RNN, RNNAnna
+
 from app.ml_models.rnn.data_tools import WordLevelDataset
+from app.ml_models.rnn.rnn_model import RNN, RNNAnna
 
 
 def load_model(model_name: str = "2021_straattaal_epoch100.pt", device: str = "cpu"):

@@ -1,11 +1,11 @@
-import torch.nn as nn
 import torch
+import torch.nn as nn
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
 from app.ml_models.rnn.data_tools import WordLevelDataset
-from app.ml_models.rnn.rnn_model import RNNAnna
 from app.ml_models.rnn.generate import generate_word
+from app.ml_models.rnn.rnn_model import RNNAnna
 
 
 def train(

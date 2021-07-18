@@ -1,5 +1,6 @@
-import torch
 from random import choice as choose
+
+import torch
 
 
 def next_char(out, temperature):
