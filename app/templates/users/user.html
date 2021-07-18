@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- Main introduction -->
+    <h1>User Profile</h1>
+    <h2>User: {{ user.username.capitalize() }}!</h2>
+    <p>{{ user.username.capitalize() }}'s groups are {{ user.groups }}</p>
+
+    <!-- Table with words and meanings -->
+    <table class="table table-striped">
+        <thead>
+            <th style="text-align:left">Word</th>
+            <th style="text-align:left">Meaning</th>
+        </thead>
+        {% for word in words %}
+          <tr>
+              <td>{{ word.word }}</td>
+              <td>{{ word.meaning }}</td>
+          </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

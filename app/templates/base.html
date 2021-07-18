@@ -5,6 +5,12 @@
         {% else %}
         <title>Cool application</title>
         {% endif %}
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+        <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     </head>
     <body>
         <div>
@@ -16,6 +22,7 @@
             <a href="{{ url_for('auth.logout') }}">Logout</a>
             {% endif %}
             <a href="{{ url_for('groups.groups') }}">Groups</a>
+            <a href="{{ url_for('users.main') }}">Users</a>
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}

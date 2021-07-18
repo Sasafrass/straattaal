@@ -47,4 +47,9 @@ def create_app(config_class=Config):
 
     app.register_blueprint(groups_bp, url_prefix="/groups")
 
+    # Users blueprint.
+    from app.users import bp as users_bp
+
+    app.register_blueprint(users_bp, url_prefix="/users")
+
     return app
