@@ -112,7 +112,7 @@ def train(
 if __name__ == "__main__":
 
     dataset = WordLevelDataset(
-        prefix="../../../data/", filename_dataset="straattaal.txt"
+        prefix="../../../data/", filename_datasets=["straattaal.txt"]
     )
 
     # Currently only batch size 1 works

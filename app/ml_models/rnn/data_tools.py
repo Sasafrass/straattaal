@@ -1,4 +1,5 @@
 import os
+from typing import List
 
 import torch
 from torch.utils.data import Dataset
@@ -10,24 +11,27 @@ class WordLevelDataset(Dataset):
     def __init__(
         self,
         prefix: str = "../../../data/",
-        filename_dataset: str = "straattaal.txt",
+        filename_datasets: List[str] = ["straattaal.txt"],
         vocabulary: Vocabulary = None,
         filename_vocab: str = "vocabulary.txt",
     ):
-        """Initialize a WordLevelDataset object and accompanying Vocabulary object if necessary.
+        """
+        Initialize a WordLevelDataset object and accompanying Vocabulary object if necessary.
 
         Args:
             prefix: The prefix to the folder containing the dataset.
-            filename_dataset: Full filename of dataset to be appended to the prefix.
+            filename_datasets: A list of full filenames of datasets to be appended to the prefix.
             vocabulary: Optional Vocabulary object (see vocabulary.py). If set to None, vocabulary will be loaded from filename_vocab.
             filename_vocab: Optional, only necessary if the vocabulary argument is None. Full filename of vocabulary to be appended to the prefix.
 
         """
-        filename_dataset = os.path.join(prefix, filename_dataset)
+        self.words = []
+        for filename_dataset in filename_datasets:
+            filename_dataset = os.path.join(prefix, filename_dataset)
 
-        with open(filename_dataset, "r", encoding="utf-8") as f:
-            lines = f.read().strip().lower()
-            self.words = [s.strip().replace("\t", "") for s in lines.split("\n")]
+            with open(filename_dataset, "r", encoding="utf-8") as f:
+                lines = f.read().strip().lower()
+                self.words += [s.strip().replace("\t", "") for s in lines.split("\n")]
 
         if vocabulary is not None:
             self.vocabulary = vocabulary
@@ -50,3 +54,6 @@ class WordLevelDataset(Dataset):
         s1 = [self.char_to_idx_dict[z] for z in ["<BOS>"] + list(self.words[i])]
         s2 = [self.char_to_idx_dict[z] for z in list(self.words[i]) + ["<EOS>"]]
         return torch.LongTensor(s1), torch.LongTensor(s2)
+
+    def all_words_to_set(self):
+        return set(self.words)
