@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>User Profile</h1>
+    <h2>Hi, {{ current_user.username }}!</h2>
+    <p>Your current groups are {{ current_user.groups }}</p>
+{% endblock %}

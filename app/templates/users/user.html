@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>User Profile</h1>
+    <h2>User: {{ user.username.capitalize() }}!</h2>
+    <p>{{ user.username.capitalize() }}'s groups are {{ user.groups }}</p>
+{% endblock %}
