@@ -14,7 +14,7 @@ class Vocabulary:
         Initializes a Vocabulary object by building it from a source (text) file containing all possible characters.
 
         Args:
-            prefix: The prefix to the folder containing the source file
+            prefix: The prefix to the folder containing the source file.
             filename_source: Full filename of source file to be appended to the prefix.
             filename_destination: Full filename of destination of vocabulary file.
         """
