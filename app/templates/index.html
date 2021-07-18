@@ -1,16 +1,42 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <!-- Main index content -->
     {% if current_user.is_anonymous %}
     <h1>Hi, Anonymous user!</h1>
     {% else %}
     <h1>Hi, {{ current_user.username }}!</h1>
     <p>Your current groups are {{ current_user.groups }}</p>
     {% endif %}
-    <h2>Your new slang word is: </h2>
+    
+    <!-- Generate Slang Form -->
     <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>{{ form.submit() }}</p>
+        {{ generate_slang_form.hidden_tag() }}
+        <p>{{ generate_slang_form.submit_generate() }}</p>
     </form>
-    {{ slang_word }}
+    {% if slang_word %}
+    <h2>Your new slang word is: </h2>
+    <p>{{ slang_word }}</p>
+    {% endif %}
+
+    <!-- Meaning Form -->
+    <h2>Save the meaning for the current slang word: </h2>
+    <form action="" method="post" novalidate>
+        {{ meaning_form.hidden_tag() }}
+        <p>
+            {{ meaning_form.word.label }}<br>
+            {{ meaning_form.word(size=32, disabled=True) }}<br>
+            {% for error in meaning_form.word.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ meaning_form.meaning.label }}<br>
+            {{ meaning_form.meaning(size=32) }}<br>
+            {% for error in meaning_form.meaning.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ meaning_form.submit_meaning() }}</p>
+    </form>
 {% endblock %}
