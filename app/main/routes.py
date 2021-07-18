@@ -1,5 +1,6 @@
 import requests
 from flask import render_template
+from app import db
 from app.main import bp
 from app.main.forms import GenerateSlangForm, MeaningForm
 
@@ -10,6 +11,12 @@ def index():
     generate_slang_form = GenerateSlangForm()
     meaning_form = MeaningForm()
 
+    kwargs = {
+        'title': 'Home',
+        'generate_slang_form': generate_slang_form,
+        'meaning_form': meaning_form,
+    }
+
     if generate_slang_form.submit_generate.data and generate_slang_form.validate():
         # TODO: Might be overkill to use an API call here rather than internal call.
         response = requests.get("http://localhost:5000/api/generate_slang")
@@ -19,10 +26,8 @@ def index():
 
         return render_template(
             "index.html", 
-            title="Home", 
             slang_word=slang_word, 
-            generate_slang_form=generate_slang_form,
-            meaning_form=meaning_form,
+            **kwargs,
         )
 
     if meaning_form.submit_meaning.data and meaning_form.validate():
@@ -30,14 +35,11 @@ def index():
 
         return render_template(
             "index.html", 
-            title="Home", 
-            generate_slang_form=generate_slang_form,
-            meaning_form=meaning_form,
+            **kwargs,
         )
 
     return render_template(
         "index.html", 
-        title="Home", 
         slang_word="", 
-        generate_slang_form=generate_slang_form,
-        meaning_form=meaning_form)
+        **kwargs
+        )
