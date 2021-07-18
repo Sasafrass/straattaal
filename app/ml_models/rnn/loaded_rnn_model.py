@@ -27,10 +27,17 @@ def load_model(
     v = Vocabulary()
     v.load(prefix=".", filename_vocab=path_vocab)
 
-    # TODO: Fix hardcoded hidden size
-    m = RNNAnna(v.size, 128)
     checkpoint = torch.load(path_model, map_location=torch.device(device))
     checkpoint_model = checkpoint["model_state_dict"]
+    model_vocab_size, embedding_size = checkpoint_model["_embedding.weight"].shape
+
+    # Will work for single-layer RNNs for now.
+    hidden_size = checkpoint_model["lstm.bias_hh_l0"].shape[0]
+    if embedding_size != v.size:
+        raise ValueError(
+            f"Model vocab size {model_vocab_size} does not match vocabulary file size {v.size}"
+        )
+    m = RNNAnna(v.size, hidden_size, embedding_size=embedding_size)
     m.load_state_dict(checkpoint_model)
     m.eval()
     return m, v
@@ -60,3 +67,6 @@ def return_loaded_model():
     model.eval()
 
     return model, all_letters
+
+
+load_model()

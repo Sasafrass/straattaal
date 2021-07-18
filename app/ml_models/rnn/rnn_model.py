@@ -33,7 +33,7 @@ class RNNAnna(nn.Module):
         train_embeddings: bool = False,
         embedding_size: int = None,
     ):
-        """Initialize an RNNAnna model. Improved take on a traditional RNN.
+        """Initialize an single-layer RNNAnna model. Improved take on a traditional RNN.
 
         Args:
             vocab_size: Size of the vocabulary to be used.
