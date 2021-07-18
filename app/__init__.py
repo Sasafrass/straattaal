@@ -19,7 +19,7 @@ def create_app(config_class=Config):
     # TODO: Maybe refactor setting SESSION_TYPE to Config class.
     # TODO: Change SESSION_TYPE to 'redis' when we have our Redis instance up and running.
     # app.config['SESSION_TYPE'] = 'redis'
-    app.config['SESSION_TYPE'] = 'filesystem'
+    app.config["SESSION_TYPE"] = "filesystem"
 
     # Initialize the Flask extensions.
     db.init_app(app)
