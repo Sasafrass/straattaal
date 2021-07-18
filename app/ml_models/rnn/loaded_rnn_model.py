@@ -67,6 +67,3 @@ def return_loaded_model():
     model.eval()
 
     return model, all_letters
-
-
-load_model()
