@@ -1,0 +1,10 @@
+<link rel="stylesheet" type="text/css" href="{{ url_for('groups.static', filename='style.css') }}">
+
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Groups</h1>
+    <h2>Hi, {{ current_user.username }}!</h2>
+    <p>Your current groups are {{ current_user.groups }}</p>
+    <a href="{{ url_for('groups.create') }}">Create group!</a>
+{% endblock %}

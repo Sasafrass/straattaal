@@ -48,6 +48,7 @@ def generate_word(
             .unsqueeze(0)
             .to(device)
         )
+
         out, h = model(idxs, h)
 
         choice = torch.Tensor([-99])

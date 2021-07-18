@@ -15,6 +15,7 @@
             {% else %}
             <a href="{{ url_for('auth.logout') }}">Logout</a>
             {% endif %}
+            <a href="{{ url_for('groups.groups') }}">Groups</a>
         </div>
         <hr>
         {% with messages = get_flashed_messages() %}
