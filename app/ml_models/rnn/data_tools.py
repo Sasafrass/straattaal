@@ -22,7 +22,6 @@ class WordLevelDataset(Dataset):
             filename_datasets: A list of full filenames of datasets to be appended to the prefix.
             vocabulary: Optional Vocabulary object (see vocabulary.py). If set to None, vocabulary will be loaded from filename_vocab.
             filename_vocab: Optional, only necessary if the vocabulary argument is None. Full filename of vocabulary to be appended to the prefix.
-
         """
         self.words = []
         for filename_dataset in filename_datasets:
