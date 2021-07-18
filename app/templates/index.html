@@ -5,6 +5,7 @@
     <h1>Hi, Anonymous user!</h1>
     {% else %}
     <h1>Hi, {{ current_user.username }}!</h1>
+    <p>Your current groups are {{ current_user.groups }}</p>
     {% endif %}
     <h2>Your new slang word is: </h2>
     <form action="" method="post" novalidate>

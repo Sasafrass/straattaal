@@ -35,4 +35,9 @@ def create_app(config_class=Config):
 
     app.register_blueprint(api_bp, url_prefix="/api")
 
+    # Groups blueprint.
+    from app.groups import bp as groups_bp
+
+    app.register_blueprint(groups_bp, url_prefix="/groups")
+
     return app
