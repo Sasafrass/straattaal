@@ -1,6 +1,5 @@
 import requests
 from flask import render_template
-from app import db
 from app.main import bp
 from app.main.forms import GenerateSlangForm
 
