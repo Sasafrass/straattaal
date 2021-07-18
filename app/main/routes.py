@@ -1,5 +1,5 @@
 import requests
-from flask import render_template
+from flask import render_template, session
 from flask_login import login_required, current_user
 from app import db
 from app.main import bp
@@ -7,9 +7,9 @@ from app.main.forms import GenerateSlangForm, MeaningForm
 from app.models import Slang
 
 
-@login_required
 @bp.route("/", methods=["GET", "POST"])
 @bp.route("/index", methods=["GET", "POST"])
+@login_required
 def index():
     generate_slang_form = GenerateSlangForm()
     meaning_form = MeaningForm()
@@ -56,3 +56,16 @@ def index():
         slang_word="", 
         **kwargs
         )
+
+
+@bp.route("/set/")
+def set():
+    """Route to test setting a value in session management."""
+    session['key'] = 'value'
+    return 'ok'
+
+
+@bp.route("/get")
+def get():
+    """Route to test getting a value in session management."""
+    return session.get('key', 'not set')

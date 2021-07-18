@@ -195,6 +195,7 @@ cython_debug/
 # Django stuff:
 
 # Flask stuff:
+flask_session/
 
 # Scrapy stuff:
 
