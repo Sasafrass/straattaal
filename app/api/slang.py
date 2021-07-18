@@ -12,12 +12,12 @@ def generate_slang():
     # TODO Should not load model every time a word is queried
     # I know nothing of flask, can we save the model upon starting the app?
 
-    model, dataset = load_model()
+    model, vocab = load_model()
 
     # TODO: Should check if the word is just memorized
     new_word = generate_word(
         model=model,
-        dataset=dataset,
+        vocabulary=vocab,
         start_letter="random",
         max_len=20,  # TODO: Fix this. (?)
         temperature=0.3,
