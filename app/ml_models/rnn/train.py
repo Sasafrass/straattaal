@@ -105,7 +105,7 @@ def train(
                     "model_state_dict": rnn.state_dict(),
                     "optimizer_state_dict": optimizer.state_dict(),
                 },
-                f"{name}_statedict_{epoch}.pt",
+                f"pretrained/{name}_statedict_{epoch}.pt",
             )
 
 
