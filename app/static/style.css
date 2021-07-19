@@ -1,3 +1,9 @@
 div.main {
     margin: 10px;
 }
+
+#the_slang_word {
+    font-size: xx-large;
+    color: forestgreen;
+    padding-left: 10px;
+}
