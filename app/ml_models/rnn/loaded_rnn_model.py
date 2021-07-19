@@ -24,7 +24,7 @@ def load_model(
         filename_vocab: Filename of the vocabulary.
         device: CUDA device name to map to, probably 'cpu'.
         extra_path: Relative path to squeeze between cwd and "app". Used for notebooks.
-        abs_path: Use the exact path filenames (handy during training from python script)
+        abs_path: Whether to use the exact path filenames (handy during training from python script).
     """
     path = os.path.join(
         os.path.abspath(os.getcwd()),
