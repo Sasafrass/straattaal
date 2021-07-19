@@ -1,3 +1,4 @@
+"""Module for all authentication routes."""
 from flask import flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_user, logout_user
 from werkzeug.urls import url_parse
@@ -9,6 +10,7 @@ from app.auth import bp
 
 @bp.route("/login", methods=["GET", "POST"])
 def login():
+    """Route to make a user login."""
     if current_user.is_authenticated:
         return redirect(url_for("main.index"))
     form = LoginForm()
@@ -29,6 +31,7 @@ def login():
 
 @bp.route("/register", methods=["GET", "POST"])
 def register():
+    """Route to register a user."""
     if current_user.is_authenticated:
         return redirect(url_for("main.index"))
     form = RegistrationForm()
@@ -46,6 +49,7 @@ def register():
 
 @bp.route("/logout")
 def logout():
+    """Route to make a user logout."""
     logout_user()
 
     return redirect(url_for("main.index"))

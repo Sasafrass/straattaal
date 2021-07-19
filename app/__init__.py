@@ -1,3 +1,4 @@
+"""Main initialization for the flask application."""
 from flask import Flask
 from flask_session import Session
 from config import Config
@@ -14,6 +15,11 @@ login.login_message = "Please login to access this page."
 
 
 def create_app(config_class=Config):
+    """Create the flask application.
+    
+    Args:
+        config_class: Config class to be used to initialize the Flask application with.
+    """
     app = Flask(__name__)
     app.config.from_object(config_class)
     # TODO: Maybe refactor setting SESSION_TYPE to Config class.
