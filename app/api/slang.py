@@ -10,7 +10,6 @@ from app.ml_models.rnn.generate import generate_word
 @bp.route("/generate_slang", methods=["GET"])
 def generate_slang():
     """Generate and return a new slang word."""
-
     # Return a json containing the newly generated word.
     new_word = generate_slang_internal()
     ret = jsonify(slang_word=new_word)
@@ -20,7 +19,6 @@ def generate_slang():
 
 def generate_slang_internal():
     """Implement internal call to generate and return a new slang word instead of API call."""
-
     # Retrieve model from the session if it's already stored there.
     if not (session.get("model", None) and session.get("vocab", None)):
         print("Model isn't stored in session! Loading...")
