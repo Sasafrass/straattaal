@@ -1,3 +1,4 @@
+"""Defines WordLevelDataset object."""
 import os
 from typing import List
 
@@ -8,6 +9,8 @@ from app.ml_models.rnn.vocabulary import Vocabulary
 
 
 class WordLevelDataset(Dataset):
+    """Deals with loading and processing word-level data."""
+
     def __init__(
         self,
         prefix: str = "../../../data/",
@@ -20,6 +23,7 @@ class WordLevelDataset(Dataset):
         Args:
             prefix: The prefix to the folder containing the dataset.
             filename_datasets: A list of full filenames of datasets to be appended to the prefix.
+                               Datapoints in files are assumed to be separated by a newline.
             vocabulary: Optional Vocabulary object (see vocabulary.py). If set to None, vocabulary will be loaded from filename_vocab.
             filename_vocab: Optional, only necessary if the vocabulary argument is None. Full filename of vocabulary to be appended to the prefix.
         """
@@ -41,6 +45,7 @@ class WordLevelDataset(Dataset):
         self.idx_to_char_dict = self.vocabulary.idx_to_char_dict
 
     def __len__(self):
+        """Override Torch len function. Return amount of words in dataset."""
         return len(self.words)
 
     def __getitem__(self, i):
@@ -54,4 +59,5 @@ class WordLevelDataset(Dataset):
         return torch.LongTensor(s1), torch.LongTensor(s2)
 
     def all_words_to_set(self):
+        """Return a set of all words in this dataset."""
         return set(self.words)

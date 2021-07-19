@@ -1,3 +1,4 @@
+"""Code to load pytorch models."""
 import os
 
 import torch
@@ -44,6 +45,7 @@ def load_model(
 
 
 def return_loaded_model():
+    """Legacy model loader."""
     # Variables for trained RNN model.
     n_hidden = 128  # TODO: Fix the hardcoded hidden dimensionality.
 
