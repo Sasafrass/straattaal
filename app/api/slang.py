@@ -20,22 +20,29 @@ def generate_slang():
 def generate_slang_internal():
     """Implement internal call to generate and return a new slang word instead of API call."""
     # Retrieve model from the session if it's already stored there.
-    if not (session.get("model", None) and session.get("vocab", None)):
+    if not (
+        session.get("model", None)
+        and session.get("vocab", None)
+        and session.get("dataset", None)
+    ):
         print("Model isn't stored in session! Loading...")
         model, vocab = load_model()
         session["model"] = model
         session["vocab"] = vocab
+
+        # Load both "existing" Dutch words and straattaal words to check
+        existing = WordLevelDataset(
+            prefix="data",
+            filename_datasets=["straattaal.txt", "dutch.txt"],
+            vocabulary=vocab,
+        ).all_words_to_set()
+        session["dataset"] = existing
     else:
         print("Retrieving model from the session...")
         model = session["model"]
         vocab = session["vocab"]
+        existing = session["dataset"]
 
-    # Load both "existing" Dutch words and straattaal words to check
-    existing = WordLevelDataset(
-        prefix="data",
-        filename_datasets=["straattaal.txt", "dutch.txt"],
-        vocabulary=vocab,
-    ).all_words_to_set()
     found_one = False
     max_words = 10
 
