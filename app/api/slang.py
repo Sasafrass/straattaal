@@ -1,5 +1,5 @@
 """Functionality to generate slang words."""
-from flask import jsonify
+from flask import jsonify, session
 from app.api import bp
 
 from app.ml_models.rnn.loaded_rnn_model import load_model
@@ -10,12 +10,27 @@ from app.ml_models.rnn.generate import generate_word
 @bp.route("/generate_slang", methods=["GET"])
 def generate_slang():
     """Generate and return a new slang word."""
-    # TODO Should not load model every time a word is queried
-    # I know nothing of flask, can we save the model upon starting the app?
 
-    model, vocab = load_model()
+    # Return a json containing the newly generated word.
+    new_word = generate_slang_internal()
+    ret = jsonify(slang_word=new_word)
 
-    # TODO Same as above, should not load dataset every time a word is queried.
+    return ret
+
+
+def generate_slang_internal():
+    """Implement internal call to generate and return a new slang word instead of API call."""
+
+    # Retrieve model from the session if it's already stored there.
+    if not (session.get("model", None) and session.get("vocab", None)):
+        print("Model isn't stored in session! Loading...")
+        model, vocab = load_model()
+        session["model"] = model
+        session["vocab"] = vocab
+    else:
+        print("Retrieving model from the session...")
+        model = session["model"]
+        vocab = session["vocab"]
 
     # Load both "existing" Dutch words and straattaal words to check
     existing = WordLevelDataset(
@@ -39,7 +54,5 @@ def generate_slang():
             break
     if not found_one:
         print(f"Warning! Could not find a non-existing word with n={max_words}")
-    # TODO: Return a json containing the word.
-    ret = jsonify(slang_word=new_word)
 
-    return ret
+    return new_word
