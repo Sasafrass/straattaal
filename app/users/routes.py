@@ -25,6 +25,7 @@ def users(username):
 
     return render_template("users/user.html", user=user, words=words.items)
 
+
 # articles = (
 #     Article.query.filter_by(newspaper=newspaper)
 #     .order_by(Article.published_date.desc().nullslast())
