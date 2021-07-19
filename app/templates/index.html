@@ -6,7 +6,11 @@
     <h1>Hi, Anonymous user!</h1>
     {% else %}
     <h1>Hi, {{ current_user.username }}!</h1>
+    {% if current_user.groups %}
     <p>Your current groups are {{ current_user.groups }}</p>
+    {% else %}
+    <p>You do not have any groups yet.</p>
+    {% endif %}
     {% endif %}
     
     <!-- Generate Slang Form -->
