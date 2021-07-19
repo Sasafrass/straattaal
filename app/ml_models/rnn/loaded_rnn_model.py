@@ -12,8 +12,8 @@ def load_model(
     filename_vocab: str = "vocabulary.txt",
     device: str = "cpu",
 ):
-    """
-    From a given path for filename of the model and the vocabulary, loads a model and vocabulary for inference.
+    """From a given path for filename of the model and the vocabulary, loads a model and vocabulary for inference.
+
     The vocabulary size should be the same as the model vocabulary size, otherwise an error is thrown.
 
     Args:

@@ -1,9 +1,14 @@
+"""Module with all user routes for the API."""
 from app.api import bp
 
 
 @bp.route("/users/<int:id>", methods=["GET"])
 def get_user(id):
-    """Get a single user given its ID."""
+    """Get a single user given its ID.
+    
+    Args:
+        id: The requested user id.
+    """
     pass
 
 

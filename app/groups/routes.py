@@ -1,3 +1,4 @@
+"""Module containing all routes that belong to the groups blueprint."""
 from flask import redirect, render_template, url_for
 from flask_login import login_required, current_user
 from app.groups.forms import CreateGroupForm
@@ -9,12 +10,14 @@ from app.groups import bp
 @bp.route("/main", methods=["GET"])
 @login_required
 def groups():
+    """Render the main groups route and page."""
     return render_template("groups/main.html", title="Groups")
 
 
 @bp.route("/create", methods=["GET", "POST"])
 @login_required
 def create():
+    """Render the route to create a new group."""
     form = CreateGroupForm()
 
     if form.validate_on_submit():
