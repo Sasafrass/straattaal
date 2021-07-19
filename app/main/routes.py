@@ -55,7 +55,7 @@ def index():
         db.session.add(word_and_meaning)
         db.session.commit()
 
-        del session['slang_word']
+        del session["slang_word"]
 
         return render_template(
             "index.html",
