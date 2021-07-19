@@ -1,4 +1,5 @@
 import os
+from typing import List
 
 import torch
 
@@ -10,6 +11,7 @@ def load_model(
     filename_model: str = "2021_straattaal_epoch100.pt",
     filename_vocab: str = "vocabulary.txt",
     device: str = "cpu",
+    extra_path: List[str] = [],
 ):
     """
     From a given path for filename of the model and the vocabulary, loads a model and vocabulary for inference.
@@ -19,10 +21,11 @@ def load_model(
         model_name: Filename of the model.
         filename_vocab: Filename of the vocabulary.
         device: CUDA device name to map to, probably 'cpu'.
+        extra_path: Relative path to squeeze between cwd and "app". Used for notebooks.
     """
-    path = os.path.join(os.path.abspath(os.getcwd()), "app", "ml_models", "rnn")
+    path = os.path.join(os.path.abspath(os.getcwd()), *extra_path, "app", "ml_models", "rnn")
     path_model = os.path.join(path, filename_model)
-    path_vocab = os.path.join(os.path.abspath(os.getcwd()), "data", filename_vocab)
+    path_vocab = os.path.join(os.path.abspath(os.getcwd()), *extra_path, "data", filename_vocab)
 
     v = Vocabulary()
     v.load(prefix=".", filename_vocab=path_vocab)
