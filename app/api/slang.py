@@ -1,9 +1,9 @@
 from flask import jsonify
-from app.api import bp
 
-from app.ml_models.rnn.loaded_rnn_model import load_model
+from app.api import bp
 from app.ml_models.rnn.data_tools import WordLevelDataset
 from app.ml_models.rnn.generate import generate_word
+from app.ml_models.rnn.loaded_rnn_model import load_model
 
 
 @bp.route("/generate_slang", methods=["GET"])

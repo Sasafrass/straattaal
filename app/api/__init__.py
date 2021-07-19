@@ -1,5 +1,5 @@
 from flask import Blueprint
 
-bp = Blueprint("api", __name__)
+from app.api import slang, users
 
-from app.api import users, slang
+bp = Blueprint("api", __name__)

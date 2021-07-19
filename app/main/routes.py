@@ -1,6 +1,7 @@
 import requests
 from flask import flash, redirect, render_template, session, url_for
-from flask_login import login_required, current_user
+from flask_login import current_user, login_required
+
 from app import db
 from app.main import bp
 from app.main.forms import GenerateSlangForm, MeaningForm
@@ -55,7 +56,7 @@ def index():
         db.session.add(word_and_meaning)
         db.session.commit()
 
-        del session['slang_word']
+        del session["slang_word"]
 
         return render_template(
             "index.html",

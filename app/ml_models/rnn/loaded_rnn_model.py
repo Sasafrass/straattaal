@@ -2,8 +2,8 @@ import os
 
 import torch
 
-from app.ml_models.rnn.vocabulary import Vocabulary
 from app.ml_models.rnn.rnn_model import RNN, RNNAnna
+from app.ml_models.rnn.vocabulary import Vocabulary
 
 
 def load_model(

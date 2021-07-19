@@ -1,8 +1,8 @@
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from app.models import User, Slang
-from app.users import bp
 
+from app.models import Slang, User
+from app.users import bp
 
 # TODO: MOVE THIS VARIABLE SOMEWHERE ELSE.
 WORDS_PER_PAGE = 25
@@ -24,6 +24,7 @@ def users(username):
     words = Slang.query.filter_by(user_id=user_id).paginate(page, WORDS_PER_PAGE, False)
 
     return render_template("users/user.html", user=user, words=words.items)
+
 
 # articles = (
 #     Article.query.filter_by(newspaper=newspaper)

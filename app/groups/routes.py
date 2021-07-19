@@ -1,9 +1,10 @@
 from flask import redirect, render_template, url_for
-from flask_login import login_required, current_user
-from app.groups.forms import CreateGroupForm
+from flask_login import current_user, login_required
+
 from app import db
-from app.models import Group
 from app.groups import bp
+from app.groups.forms import CreateGroupForm
+from app.models import Group
 
 
 @bp.route("/main", methods=["GET"])
