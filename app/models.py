@@ -1,3 +1,4 @@
+"""Module that contains all database models and tables."""
 from app import db, login
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -12,6 +13,8 @@ groups = db.Table(
 
 
 class User(UserMixin, db.Model):
+    """Implement a database model for a user. UserMixin provides some off-the-shelf functionality."""
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
@@ -26,26 +29,42 @@ class User(UserMixin, db.Model):
     )
 
     def __repr__(self):
+        """Instructions on how to display or print a user."""
         return f"<User {self.username}>"
 
-    def set_password(self, password):
+    def set_password(self, password: str):
+        """Set the password for the user to be persisted to database.
+        
+        Args:
+            password: The password to be set for the user.
+        """
         self.password_hash = generate_password_hash(password)
 
-    def check_password(self, password):
+    def check_password(self, password: str):
+        """Check whether the provided password matches the password in the database.
+        
+        Args:
+            password: The password provided by the user to be matched.
+        """
         return check_password_hash(self.password_hash, password)
 
 
 class Slang(db.Model):
+    """Implement a database model for Slang words and their meanings."""
+
     id = db.Column(db.Integer, primary_key=True)
     word = db.Column(db.String(56))
     meaning = db.Column(db.String(280))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
     def __repr__(self):
+        """Instructions on how to display or print a Slang database model."""
         return f"<Word {self.word}>"
 
 
 class Group(db.Model):
+    """Implement a database model for groups and their members."""
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128), index=True, unique=True)
     users = db.relationship(
@@ -58,5 +77,10 @@ class Group(db.Model):
 
 
 @login.user_loader
-def load_user(id):
+def load_user(id: str):
+    """Implement helper function for flask_login on how to load a user.
+    
+    Args:
+        id: A user_id given by the decorator as a string.
+    """
     return User.query.get(int(id))

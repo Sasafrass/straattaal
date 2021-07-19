@@ -1,3 +1,4 @@
+"""Contains functions to generate new words given a recurrent model."""
 from random import choice as choose
 
 import torch

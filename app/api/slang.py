@@ -1,3 +1,4 @@
+"""Functionality to generate slang words."""
 from flask import jsonify
 from app.api import bp
 
@@ -9,7 +10,6 @@ from app.ml_models.rnn.generate import generate_word
 @bp.route("/generate_slang", methods=["GET"])
 def generate_slang():
     """Generate and return a new slang word."""
-
     # TODO Should not load model every time a word is queried
     # I know nothing of flask, can we save the model upon starting the app?
 

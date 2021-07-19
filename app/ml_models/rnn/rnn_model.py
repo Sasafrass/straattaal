@@ -1,9 +1,13 @@
+"""Defines recurrent models."""
 import torch
 import torch.nn as nn
 
 
 class RNN(nn.Module):
+    """Legacy model."""
+
     def __init__(self, input_size, hidden_size, output_size):
+        """Initialize manual RNN model of specified dimensionality."""
         super(RNN, self).__init__()
 
         self.hidden_size = hidden_size
@@ -14,6 +18,7 @@ class RNN(nn.Module):
         self.dropout = nn.Dropout(0.1)
 
     def forward(self, input, hidden):
+        """Do forward pass."""
         combined = torch.cat((input, hidden), 1)
         hidden = self.tanh(self.i2h(combined))
         output = self.i2o(hidden)
@@ -22,10 +27,13 @@ class RNN(nn.Module):
         return output, hidden
 
     def initHidden(self):
+        """Initialize hidden state with zeros."""
         return torch.zeros(1, self.hidden_size)
 
 
 class RNNAnna(nn.Module):
+    """Basic pytorch RNN model."""
+
     def __init__(
         self,
         vocab_size: int,
@@ -57,6 +65,12 @@ class RNNAnna(nn.Module):
         self.hidden_size = hidden_size
 
     def forward(self, x, hidden=None):
+        """Do a forward pass of input x.
+
+        Args:
+            x: Tensor of any dimensionality, containing indices between 0 and vocab_size.
+            h: Initial hidden state. If set to None, torch will initialize it for you, no need to worry about dimensions.
+        """
         x = self._embedding(x)
         out, hidden = self.lstm(x, hidden)
         return self.final(self.dropout(out)), hidden

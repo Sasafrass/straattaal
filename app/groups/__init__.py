@@ -1,3 +1,4 @@
+"""Main initialization entrypoint for the groups blueprint."""
 from flask import Blueprint
 
 bp = Blueprint(

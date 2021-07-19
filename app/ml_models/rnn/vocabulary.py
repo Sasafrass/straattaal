@@ -1,7 +1,10 @@
+"""Defines a Vocabulary object."""
 import os
 
 
 class Vocabulary:
+    """A helper for building/loading vocabulary files. Deals with conversion from indices to words/characters."""
+
     def build(
         self,
         prefix: str = "../../../data/",
@@ -11,7 +14,7 @@ class Vocabulary:
         lower: bool = True,
     ):
         """
-        Initializes a Vocabulary object by building it from a source (text) file containing all possible characters.
+        Initialize a Vocabulary object by building it from a source (text) file containing all possible characters.
 
         Args:
             prefix: The prefix to the folder containing the source file.
@@ -67,6 +70,5 @@ class Vocabulary:
         Args:
             char_ix: Iterable of ints (indices) that represent characters.
         """
-
         result = "".join(self.idx_to_char_dict[ix] for ix in char_idxs)
         return result

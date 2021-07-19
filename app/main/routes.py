@@ -1,3 +1,4 @@
+"""Module containing all the routes for the main blueprint."""
 import requests
 from flask import flash, redirect, render_template, session, url_for
 from flask_login import login_required, current_user
@@ -11,6 +12,7 @@ from app.models import Slang
 @bp.route("/index", methods=["GET", "POST"])
 @login_required
 def index():
+    """Implement the index route for the main blueprint - serves as the homepage."""
     generate_slang_form = GenerateSlangForm()
     meaning_form = MeaningForm()
 

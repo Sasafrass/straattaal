@@ -1,3 +1,4 @@
+"""Code to load pytorch models."""
 import os
 from typing import List
 
@@ -13,8 +14,8 @@ def load_model(
     device: str = "cpu",
     extra_path: List[str] = [],
 ):
-    """
-    From a given path for filename of the model and the vocabulary, loads a model and vocabulary for inference.
+    """From a given path for filename of the model and the vocabulary, loads a model and vocabulary for inference.
+
     The vocabulary size should be the same as the model vocabulary size, otherwise an error is thrown.
 
     Args:
@@ -56,6 +57,7 @@ def load_model(
 
 
 def return_loaded_model():
+    """Legacy model loader."""
     # Variables for trained RNN model.
     n_hidden = 128  # TODO: Fix the hardcoded hidden dimensionality.
 

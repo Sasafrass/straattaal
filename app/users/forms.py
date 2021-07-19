@@ -1,0 +1,1 @@
+"""Module that contains all routes belonging to the users blueprint."""
