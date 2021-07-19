@@ -65,7 +65,12 @@ class RNNAnna(nn.Module):
         self.hidden_size = hidden_size
 
     def forward(self, x, hidden=None):
-        """Bitch."""
+        """Do a forward pass of input x.
+
+        Args:
+            x: Tensor of any dimensionality, containing indices between 0 and vocab_size.
+            h: Initial hidden state. If set to None, torch will initialize it for you, no need to worry about dimensions.
+        """
         x = self._embedding(x)
         out, hidden = self.lstm(x, hidden)
         return self.final(self.dropout(out)), hidden
