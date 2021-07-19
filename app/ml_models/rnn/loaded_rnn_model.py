@@ -23,9 +23,18 @@ def load_model(
         device: CUDA device name to map to, probably 'cpu'.
         extra_path: Relative path to squeeze between cwd and "app". Used for notebooks.
     """
-    path = os.path.join(os.path.abspath(os.getcwd()), *extra_path, "app", "ml_models", "rnn")
+    path = os.path.join(
+        os.path.abspath(os.getcwd()),
+        *extra_path,
+        "app",
+        "ml_models",
+        "rnn",
+        "pretrained",
+    )
     path_model = os.path.join(path, filename_model)
-    path_vocab = os.path.join(os.path.abspath(os.getcwd()), *extra_path, "data", filename_vocab)
+    path_vocab = os.path.join(
+        os.path.abspath(os.getcwd()), *extra_path, "data", filename_vocab
+    )
 
     v = Vocabulary()
     v.load(prefix=".", filename_vocab=path_vocab)
@@ -53,7 +62,7 @@ def return_loaded_model():
     # Construct correct path to model file.
     # TODO: Fix the hardcoded cwd path!
     cwd_path = os.path.abspath(os.getcwd())
-    cwd_path = os.path.join(cwd_path, "app", "ml_models", "rnn")
+    cwd_path = os.path.join(cwd_path, "app", "ml_models", "rnn", "pretrained")
     timestamp = "2019-11072021"
     model_path = timestamp + "_straattaal.pth"
     letter_path = timestamp + "_all_letters.txt"
