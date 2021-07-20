@@ -1,8 +1,9 @@
 """Module containing all the routes for the main blueprint."""
-import requests
+# import requests
 from flask import flash, redirect, render_template, session, url_for
 from flask_login import login_required, current_user
 from app import db
+from app.api.slang import generate_slang_internal
 from app.main import bp
 from app.main.forms import GenerateSlangForm, MeaningForm
 from app.models import Slang
@@ -24,10 +25,11 @@ def index():
     }
 
     if generate_slang_form.submit_generate.data and generate_slang_form.validate():
-        # TODO: Might be overkill to use an API call here rather than internal call.
-        response = requests.get("http://localhost:5000/api/generate_slang")
-        response = response.json()
-        slang_word = response["slang_word"]
+        # # TODO: Might be overkill to use an API call here rather than internal call.
+        # response = requests.get("http://localhost:5000/api/generate_slang")
+        # response = response.json()
+        # slang_word = response["slang_word"]
+        slang_word = generate_slang_internal()
 
         # Set slang word in meaning_form for visual purposes and in session for retrieval.
         meaning_form.word.data = slang_word
