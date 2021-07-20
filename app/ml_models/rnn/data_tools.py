@@ -45,7 +45,7 @@ class WordLevelDataset(Dataset):
         self.idx_to_char_dict = self.vocabulary.idx_to_char_dict
 
     def __len__(self):
-        """Override Torch len function. Return amount of words in dataset."""
+        """Override Torch len function. Return number of words in dataset."""
         return len(self.words)
 
     def __getitem__(self, i):
