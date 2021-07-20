@@ -13,6 +13,7 @@ def load_model(
     filename_vocab: str = "vocabulary.txt",
     device: str = "cpu",
     extra_path: List[str] = [],
+    abs_path: bool = False,
 ):
     """From a given path for filename of the model and the vocabulary, loads a model and vocabulary for inference.
 
@@ -23,6 +24,7 @@ def load_model(
         filename_vocab: Filename of the vocabulary.
         device: CUDA device name to map to, probably 'cpu'.
         extra_path: Relative path to squeeze between cwd and "app". Used for notebooks.
+        abs_path: Whether to use the exact path filenames (handy during training from python script).
     """
     path = os.path.join(
         os.path.abspath(os.getcwd()),
@@ -32,9 +34,11 @@ def load_model(
         "rnn",
         "pretrained",
     )
-    path_model = os.path.join(path, filename_model)
-    path_vocab = os.path.join(
-        os.path.abspath(os.getcwd()), *extra_path, "data", filename_vocab
+    path_model = os.path.join(path, filename_model) if not abs_path else filename_model
+    path_vocab = (
+        os.path.join(os.path.abspath(os.getcwd()), *extra_path, "data", filename_vocab)
+        if not abs_path
+        else filename_vocab
     )
 
     v = Vocabulary()

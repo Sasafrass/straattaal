@@ -32,6 +32,8 @@ def train(
         save_every: After every multitude of this number we save a version of the model.
         print_every: After every multitude of this number we print the loss.
     """
+    rnn = rnn.to(device)
+
     # With CrossEntropyLoss we don't need (manual) one-hot
     criterion = nn.CrossEntropyLoss()
 
@@ -108,15 +110,3 @@ def train(
                 },
                 f"pretrained/{name}_statedict_{epoch}.pt",
             )
-
-
-if __name__ == "__main__":
-
-    dataset = WordLevelDataset(
-        prefix="../../../data/", filename_datasets=["straattaal.txt"]
-    )
-
-    # Currently only batch size 1 works
-    train_loader = DataLoader(dataset, 1, shuffle=True)
-    rnn = RNNAnna(dataset.vocabulary_size, 64, 128)
-    train(rnn, train_loader, dataset)

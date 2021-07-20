@@ -2,6 +2,32 @@
 
 Ever wanted to generate new Dutch slang? Look no further! This application makes use of Recurrent Neural Networks trained on a comprehensive database of Dutch slang to generate new slang. Some words may immediately bring up a visceral feeling of what they mean, and this application allows you to provide the community with your interpretation of what the newly created slang means.
 
+## Examples
+We have several pre-trained models available to generate novel words from multiple classes.
+
+### Straattaal
+- rampa
+- joeko
+- opjo
+- oggor
+- zittie
+
+### Plaatsnamen
+- Boschem
+- De Heel
+- Echterberg
+- Zeernenbroek
+- Schoosnijk
+
+### Dutch words in general
+- tertokraat
+- gebelenster
+- besteerding
+- verstrijf
+- wulveroeking
+
+
+
 ## How to use?
 
 Instructions on how to run this application locally. If you don't have Postgres set up (with the correct environment variables), it should run a SQLite database with more or less the same functionality. This should be sufficient for testing purposes and making tweaks to the code. Everything in ```these blocks``` are considered terminal commands.
