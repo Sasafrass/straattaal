@@ -1,5 +1,5 @@
 """Functionality to generate slang words."""
-from flask import jsonify
+from flask import jsonify, session
 from app.api import bp
 
 from app.ml_models.rnn.loaded_rnn_model import load_model
@@ -10,19 +10,39 @@ from app.ml_models.rnn.generate import generate_word
 @bp.route("/generate_slang", methods=["GET"])
 def generate_slang():
     """Generate and return a new slang word."""
-    # TODO Should not load model every time a word is queried
-    # I know nothing of flask, can we save the model upon starting the app?
+    # Return a json containing the newly generated word.
+    new_word = generate_slang_internal()
+    ret = jsonify(slang_word=new_word)
 
-    model, vocab = load_model()
+    return ret
 
-    # TODO Same as above, should not load dataset every time a word is queried.
 
-    # Load both "existing" Dutch words and straattaal words to check
-    existing = WordLevelDataset(
-        prefix="data",
-        filename_datasets=["straattaal.txt", "dutch.txt"],
-        vocabulary=vocab,
-    ).all_words_to_set()
+def generate_slang_internal():
+    """Implement internal call to generate and return a new slang word instead of API call."""
+    # Retrieve model from the session if it's already stored there.
+    if not (
+        session.get("model", None)
+        and session.get("vocab", None)
+        and session.get("dataset", None)
+    ):
+        print("Model isn't stored in session! Loading...")
+        model, vocab = load_model()
+        session["model"] = model
+        session["vocab"] = vocab
+
+        # Load both "existing" Dutch words and straattaal words to check
+        existing = WordLevelDataset(
+            prefix="data",
+            filename_datasets=["straattaal.txt", "dutch.txt"],
+            vocabulary=vocab,
+        ).all_words_to_set()
+        session["dataset"] = existing
+    else:
+        print("Retrieving model from the session...")
+        model = session["model"]
+        vocab = session["vocab"]
+        existing = session["dataset"]
+
     found_one = False
     max_words = 10
 
@@ -39,7 +59,5 @@ def generate_slang():
             break
     if not found_one:
         print(f"Warning! Could not find a non-existing word with n={max_words}")
-    # TODO: Return a json containing the word.
-    ret = jsonify(slang_word=new_word)
 
-    return ret
+    return new_word
