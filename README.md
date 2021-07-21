@@ -3,14 +3,14 @@
 Ever wanted to generate new Dutch slang? Look no further! This application makes use of Recurrent Neural Networks trained on a comprehensive database of Dutch slang to generate new slang. Some words may immediately bring up a visceral feeling of what they mean, and this application allows you to provide the community with your interpretation of what the newly created slang means.
 
 ## Examples
-We have several pre-trained models available to generate novel words from multiple classes.
+We have several pre-trained models available to generate novel words from multiple classes. The following is a selection of some of our favorite generated words per category. Can you come up with a better meaning for the slang words?
 
 ### Straattaal
-- rampa
-- joeko
-- opjo
-- oggor
-- zittie
+- **rampa:** Een grote ramp / A big disaster.
+- **joeko:** Groot / Big.
+- **opjo:** Cool / cool.
+- **daggie:** Een mes / A knife.
+- **zittie:** Irritant / Annoying.
 
 ### Plaatsnamen
 - Boschem
