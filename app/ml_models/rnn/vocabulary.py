@@ -1,5 +1,6 @@
 """Defines a Vocabulary object."""
 import os
+from typing import List
 
 
 class Vocabulary:
@@ -8,7 +9,7 @@ class Vocabulary:
     def build(
         self,
         prefix: str = "../../../data/",
-        filename_source: str = "dutch.txt",  # TODO also fread from multiple files if necessary
+        filename_datasets: List[str] = ["dutch.txt"],
         filename_destination: str = "dutch_vocab.txt",
         overwrite: bool = False,
         lower: bool = True,
@@ -18,10 +19,9 @@ class Vocabulary:
 
         Args:
             prefix: The prefix to the folder containing the source file.
-            filename_source: Full filename of source file to be appended to the prefix.
+            filename_datasets: A list of source filenames to be appended to the prefix. Final vocabulary is intersection of all files.
             filename_destination: Full filename of destination of vocabulary file.
         """
-        filename_source = os.path.join(prefix, filename_source)
         filename_destination = os.path.join(prefix, filename_destination)
 
         if os.path.exists(filename_destination) and not overwrite:
@@ -29,11 +29,15 @@ class Vocabulary:
                 f"Vocabulary file {filename_destination} already exists! Use option overwrite to overwrite existing vocabulary."
             )
 
-        with open(filename_source, "r", encoding="utf-8") as f:
-            if not lower:
-                chars = set(f.read())
-            else:
-                chars = set(f.read().lower())
+        chars = set()
+        for filename_dataset in filename_datasets:
+            filename_dataset = os.path.join(prefix, filename_dataset)
+
+            with open(filename_dataset, "r", encoding="utf-8") as f:
+                if not lower:
+                    chars.update(set(f.read()))
+                else:
+                    chars.update(set(f.read().lower()))
         chars.difference_update(set('\n\t"'))
 
         # Sort the vocabulary
