@@ -14,7 +14,7 @@ from app.ml_models.rnn.loaded_rnn_model import init_torch_model_from_path
 from app.ml_models.rnn.rnn_model import RNNAnna
 
 
-def _run(**kwargs):
+def _run(**kwargs) -> None:
     """Run a simple training loop."""
     # Preliminary checks
     if kwargs["batch_size"] != 1:
