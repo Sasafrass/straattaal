@@ -1,4 +1,6 @@
 """Functionality for locally training files."""
+import argparse
+
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
@@ -30,5 +32,12 @@ def run():
 
 
 if __name__ == "__main__":
-    # TODO Argparser
+    # Parse command line arguments
+    PARSER = argparse.ArgumentParser()
+    PARSER.add_argument('--filename_source', type=str, default='data/familienamen.txt',
+                    help='File to pull the training data file from.')
+    PARSER.add_argument('--filename_datasets', type=str, default='familienamen.txt',
+                    help='File to pull the dataset from.')
+    PARSER.add_argument('--dir', type=str, default='my_own_model',
+                    help='main directory to save intermediate results')
     run()
