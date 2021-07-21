@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from app import db
 from app.api.slang import generate_slang_internal
 from app.main import bp
-from app.main.forms import GenerateSlangForm, MeaningForm
+from app.main.forms import GenerateSlangForm, MeaningForm, ChooseModelField
 from app.models import Slang
 
 
@@ -16,20 +16,33 @@ def index():
     """Implement the index route for the main blueprint - serves as the homepage."""
     generate_slang_form = GenerateSlangForm()
     meaning_form = MeaningForm()
+    model_form = ChooseModelField()
 
     # Frequently used keyword arguments for rendering templates.
     kwargs = {
         "title": "Home",
         "generate_slang_form": generate_slang_form,
         "meaning_form": meaning_form,
+        "model_form": model_form,
     }
+
+    if model_form.validate():
+        print(f"Was selected : {model_form.select_model.data}")
+        model_type = model_form.select_model.data
+        model_form.select_model.object_data = model_type
+        session["model_type"] = model_type
+
+    # Persist model_type through re-clicking generate_slang and other refreshing
+    if "model_type" in session:
+        model_form.select_model.object_data = session["model_type"]
+        model_form.select_model.data = session["model_type"]
 
     if generate_slang_form.submit_generate.data and generate_slang_form.validate():
         # # TODO: Might be overkill to use an API call here rather than internal call.
         # response = requests.get("http://localhost:5000/api/generate_slang")
         # response = response.json()
         # slang_word = response["slang_word"]
-        slang_word = generate_slang_internal()
+        slang_word = generate_slang_internal(session.get("model_type", None))
 
         # Set slang word in meaning_form for visual purposes and in session for retrieval.
         meaning_form.word.data = slang_word

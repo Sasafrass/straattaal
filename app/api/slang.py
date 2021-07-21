@@ -1,4 +1,6 @@
 """Functionality to generate slang words."""
+from collections import defaultdict
+
 from flask import jsonify, session
 from app.api import bp
 
@@ -17,30 +19,50 @@ def generate_slang():
     return ret
 
 
-def generate_slang_internal():
+def generate_slang_internal(model_type=None):
     """Implement internal call to generate and return a new slang word instead of API call."""
+
+    # Functionality to convert model selection to filename for load_model.
+    model_filename_dict = {
+        "Straattaal": "2021_straattaal_epoch100.pt",
+        "Plaatsnamen": "plaatsnamen_epoch10.pt",
+        "Nederlandse woorden": "pretrained_dutch_epoch3.pt",
+        "Familienamen": "familienamen_epoch4.pt",
+    }
+    vocab_filename_dict = defaultdict(lambda: "vocabulary.txt")
+    vocab_filename_dict["Familienamen"] = "vocabulary_extended.txt"
+
+    # Up to interpretation: which do we consider "existing"?
+    existing_dict = defaultdict(
+        lambda: ["straattaal.txt", "dutch.txt", "plaatsnamen.txt"]
+    )
+    existing_dict["Familienamen"] = ["familienamen.txt"]
+
     # Retrieve model from the session if it's already stored there.
     if not (
-        session.get("model", None)
-        and session.get("vocab", None)
+        session.get("model" + model_type, None)
+        and session.get("vocab" + model_type, None)
         and session.get("dataset", None)
     ):
         print("Model isn't stored in session! Loading...")
-        model, vocab = load_model()
-        session["model"] = model
-        session["vocab"] = vocab
+        model, vocab = load_model(
+            model_filename_dict[model_type],
+            filename_vocab=vocab_filename_dict[model_type],
+        )
+        session["model" + model_type] = model
+        session["vocab" + model_type] = vocab
 
         # Load both "existing" Dutch words and straattaal words to check
         existing = WordLevelDataset(
             prefix="data",
-            filename_datasets=["straattaal.txt", "dutch.txt"],
+            filename_datasets=existing_dict[model_type],
             vocabulary=vocab,
         ).all_words_to_set()
         session["dataset"] = existing
     else:
         print("Retrieving model from the session...")
-        model = session["model"]
-        vocab = session["vocab"]
+        model = session["model" + model_type]
+        vocab = session["vocab" + model_type]
         existing = session["dataset"]
 
     found_one = False
@@ -52,7 +74,7 @@ def generate_slang_internal():
             vocabulary=vocab,
             start_letter="random",
             max_len=20,  # TODO: Fix this. (?)
-            temperature=0.3,
+            temperature=0.35,
         )
         if new_word not in existing:
             found_one = True

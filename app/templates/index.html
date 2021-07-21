@@ -8,6 +8,13 @@
     <h1>Hi, {{ current_user.username }}!</h1>
     <p>Your current groups are {{ current_user.groups }}</p>
     {% endif %}
+
+    <!-- Generate Model selector form -->
+    <form action="" method="post" novalidate>
+        {{ model_form.hidden_tag() }}
+        {{ model_form.select_model() }}
+        <input type="submit" value="Change model">
+    </form>
     
     <!-- Generate Slang Form -->
     <form action="" method="post" novalidate>
