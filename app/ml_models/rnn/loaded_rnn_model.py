@@ -43,7 +43,12 @@ def load_model(
 
     v = Vocabulary()
     v.load(prefix=".", filename_vocab=path_vocab)
+    m = init_torch_model_from_path(path_model, v, device=device)
+    m.eval()
+    return m, v
 
+
+def init_torch_model_from_path(path_model: str, v: Vocabulary, device: str = "cpu"):
     checkpoint = torch.load(path_model, map_location=torch.device(device))
     checkpoint_model = checkpoint["model_state_dict"]
     model_vocab_size, embedding_size = checkpoint_model["_embedding.weight"].shape
@@ -56,8 +61,7 @@ def load_model(
         )
     m = RNNAnna(v.size, hidden_size, embedding_size=embedding_size)
     m.load_state_dict(checkpoint_model)
-    m.eval()
-    return m, v
+    return m
 
 
 def return_loaded_model():

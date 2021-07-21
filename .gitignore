@@ -245,3 +245,6 @@ flask_session/
 
 # Own stuff
 app.db # Ignore any SQLite db pushes.
+
+# Ignore models that are still training.
+models/* 
