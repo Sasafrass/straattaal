@@ -101,6 +101,7 @@ def train(
                     ),
                 )
 
+            exit()
             # TODO Save this to some generic spot, not just aat cwd...
             torch.save(
                 {
