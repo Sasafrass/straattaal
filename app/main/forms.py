@@ -13,6 +13,7 @@ class ChooseModelField(FlaskForm):
     """Select form to choose the generator model."""
 
     def __init__(self, *args, **kwargs):
+        """Initialize a SelectField."""
         super(ChooseModelField, self).__init__(*args, **kwargs)
         self.select_model.choices = [
             "Straattaal",
