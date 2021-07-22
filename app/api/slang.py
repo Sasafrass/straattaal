@@ -35,7 +35,7 @@ def generate_slang():
     return ret
 
 
-def _retrieve_info_from_session(model_type: str):
+def retrieve_info_from_session(model_type: str) -> Tuple[nn.Module, Vocabulary, WordLevelDataset]:
     """Retrieve model from the session if it's already stored there.
 
     Args:
