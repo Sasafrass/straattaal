@@ -92,6 +92,7 @@ def generate_nonexistent_word(model: nn.Module, vocab: Vocabulary, existing: set
             break
     if not found_one:
         print(f"Warning! Could not find a non-existing word with n={max_words}")
+
     return new_word
 
 
