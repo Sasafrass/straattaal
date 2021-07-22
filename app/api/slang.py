@@ -1,6 +1,7 @@
 """Functionality to generate slang words."""
 from collections import defaultdict
-
+from typing import Tuple
+import torch.nn as nn
 from flask import jsonify, session
 from app.api import bp
 
