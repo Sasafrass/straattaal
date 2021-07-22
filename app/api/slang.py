@@ -109,6 +109,10 @@ def generate_slang_internal(model_type: str = None) -> str:
         model_type: string representing the type of the pre-trained model.
                     One of [Straattaal, Plaatsnamen, Nederlandse woorden, Familienamen]
     """
+    # First time starting the application, will be None if selection button not pressed yet
+    if model_type is None:
+        model_type = "straattaal"
+
     # Build and store model-related artefacts in session if absent, else load from session.
     if not (
         session.get("model" + model_type, None)
