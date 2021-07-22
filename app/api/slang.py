@@ -35,7 +35,7 @@ def generate_slang():
     return ret
 
 
-def retrieve_info_from_session(model_type: str) -> Tuple[nn.Module, Vocabulary, WordLevelDataset]:
+def retrieve_info_from_session(model_type: str) -> Tuple[nn.Module, Vocabulary, set]:
     """Retrieve model from the session if it's already stored there.
 
     Args:
@@ -49,7 +49,7 @@ def retrieve_info_from_session(model_type: str) -> Tuple[nn.Module, Vocabulary, 
     return model, vocab, existing
 
 
-def store_info_in_session(model_type: str) -> Tuple[nn.Module, Vocabulary, WordLevelDataset]:
+def store_info_in_session(model_type: str) -> Tuple[nn.Module, Vocabulary, set]:
     """Store model-related objects in session if they haven't been stored yet.
     
     Args:
