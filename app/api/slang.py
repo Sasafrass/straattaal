@@ -41,31 +41,36 @@ def retrieve_info_from_session(model_type: str) -> Tuple[nn.Module, Vocabulary, 
     Args:
         model_type: Model name for storing/looking up the associated model, vocabulary and "illegal" dataset.
     """
-    if not (
-        session.get("model" + model_type, None)
-        and session.get("vocab" + model_type, None)
-        and session.get("dataset" + model_type, None)
-    ):
-        print("Model isn't stored in session! Loading...")
-        model, vocab = load_model(
-            model_filename_dict[model_type],
-            filename_vocab=vocab_filename_dict[model_type],
-        )
-        session["model" + model_type] = model
-        session["vocab" + model_type] = vocab
+    print("Retrieving model from the session...")
+    model = session["model" + model_type]
+    vocab = session["vocab" + model_type]
+    existing = session["dataset" + model_type]
 
-        # Load both "existing" Dutch words and straattaal words to check
-        existing = WordLevelDataset(
-            prefix="data",
-            filename_datasets=existing_dict[model_type],
-            vocabulary=vocab,
-        ).all_words_to_set()
-        session["dataset" + model_type] = existing
-    else:
-        print("Retrieving model from the session...")
-        model = session["model" + model_type]
-        vocab = session["vocab" + model_type]
-        existing = session["dataset" + model_type]
+    return model, vocab, existing
+
+
+def store_info_in_session(model_type: str) -> Tuple[nn.Module, Vocabulary, WordLevelDataset]:
+    """Store model-related objects in session if they haven't been stored yet.
+    
+    Args:
+        model_type: Model name for storing/looking up the associated model, vocabulary and "illegal" dataset.
+    """
+    print("Model isn't stored in session! Loading...")
+    model, vocab = load_model(
+        model_filename_dict[model_type],
+        filename_vocab=vocab_filename_dict[model_type],
+    )
+    session["model" + model_type] = model
+    session["vocab" + model_type] = vocab
+
+    # Load both "existing" Dutch words and straattaal words to check
+    existing = WordLevelDataset(
+        prefix="data",
+        filename_datasets=existing_dict[model_type],
+        vocabulary=vocab,
+    ).all_words_to_set()
+    session["dataset" + model_type] = existing
+
     return model, vocab, existing
 
 
@@ -104,7 +109,15 @@ def generate_slang_internal(model_type: str = None) -> str:
         model_type: string representing the type of the pre-trained model.
                     One of [Straattaal, Plaatsnamen, Nederlandse woorden, Familienamen]
     """
-    info = _retrieve_info_from_session(model_type)
+    # Build and store model-related artefacts in session if absent, else load from session.
+    if not (
+        session.get("model" + model_type, None)
+        and session.get("vocab" + model_type, None)
+        and session.get("dataset" + model_type, None)
+    ):
+        info = store_info_in_session(model_type)
+    else:
+        info = retrieve_info_from_session(model_type)
     new_word = generate_nonexistent_word(*info, max_words=10)
 
     # Proper capitalization
