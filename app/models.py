@@ -19,7 +19,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    words = db.relationship("Slang", backref="author", lazy="dynamic")
+    words = db.relationship("Word", backref="author", lazy="dynamic")
     groups = db.relationship(
         "Group",
         secondary=groups,
@@ -49,16 +49,17 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-class Slang(db.Model):
-    """Implement a database model for Slang words and their meanings."""
+class Word(db.Model):
+    """Implement a database model for words, their meanings, and their types."""
 
     id = db.Column(db.Integer, primary_key=True)
     word = db.Column(db.String(56))
     meaning = db.Column(db.String(280))
+    type = db.Column(db.String(140))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
     def __repr__(self):
-        """Instructions on how to display or print a Slang database model."""
+        """Instructions on how to display or print a Word database model."""
         return f"<Word {self.word}>"
 
 

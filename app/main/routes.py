@@ -6,7 +6,7 @@ from app import db
 from app.api.slang import generate_slang_internal
 from app.main import bp
 from app.main.forms import GenerateSlangForm, MeaningForm, ChooseModelField
-from app.models import Slang
+from app.models import Word
 
 
 @bp.route("/", methods=["GET", "POST"])
@@ -58,18 +58,20 @@ def index():
 
         # Persist word and meaning to database.
         slang_word = session.get("slang_word", None)
+        word_type = session.get("model_type", None)
         user_id = current_user.get_id()
 
         if not slang_word:
             flash("You haven't generated a slang word yet...")
             return redirect(url_for("main.index"))
 
-        word_and_meaning = Slang(
+        word_db_model = Word(
             word=slang_word,
             meaning=meaning_form.meaning.data,
+            type=word_type,
             user_id=user_id,
         )
-        db.session.add(word_and_meaning)
+        db.session.add(word_db_model)
         db.session.commit()
 
         del session["slang_word"]
