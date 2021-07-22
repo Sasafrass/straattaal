@@ -68,7 +68,7 @@ def _retrieve_info_from_session(model_type: str):
     return model, vocab, existing
 
 
-def generate_nonexistent_word(model, vocab: Vocabulary, existing: set, max_words=10):
+def generate_nonexistent_word(model: nn.Module, vocab: Vocabulary, existing: set, max_words=10) -> str:
     """Try to generate a nonexistent word using the provided model.
 
     Args:
