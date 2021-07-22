@@ -115,4 +115,5 @@ def generate_slang_internal(model_type: str = None) -> str:
             subword.capitalize() if i == len(subnames) - 1 else subword
             for i, subword in enumerate(subnames)
         )
+        
     return new_word
