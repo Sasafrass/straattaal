@@ -1,7 +1,7 @@
 """Module containing all the routes for the users blueprint."""
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from app.models import User, Slang
+from app.models import User, Word
 from app.users import bp
 
 
@@ -28,7 +28,7 @@ def users(username):
     user = User.query.filter_by(username=username).first_or_404()
     user_id = user.get_id()
     page = request.args.get("page", 1, type=int)
-    words = Slang.query.filter_by(user_id=user_id).paginate(page, WORDS_PER_PAGE, False)
+    words = Word.query.filter_by(user_id=user_id).paginate(page, WORDS_PER_PAGE, False)
 
     return render_template("users/user.html", user=user, words=words.items)
 
