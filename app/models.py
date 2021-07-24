@@ -19,8 +19,8 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    words = db.relationship("Word", backref="author", lazy="dynamic")
-    meanings = db.relationship("Meaning", backref="author", lazy="dynamic")
+    words = db.relationship("Word", backref="word_author", lazy="dynamic")
+    meanings = db.relationship("Meaning", backref="meaning_author", lazy="dynamic")
     groups = db.relationship(
         "Group",
         secondary=groups,
