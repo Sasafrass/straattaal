@@ -54,8 +54,8 @@ class Meaning(db.Model):
     """Implement a database model for words, their meanings, and their types."""
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     meaning = db.Column(db.String(140))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     word_id = db.Column(db.Integer, db.ForeignKey("word.id"))
 
 

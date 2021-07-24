@@ -30,6 +30,9 @@ def users(username):
     page = request.args.get("page", 1, type=int)
     words = Word.query.filter_by(user_id=user_id).paginate(page, WORDS_PER_PAGE, False)
 
+    # TODO: Find new way of passing the words and meanings e.g. as tuples.
+        # Or just query the meanings db model instead.
+
     return render_template("users/user.html", user=user, words=words.items)
 
 
