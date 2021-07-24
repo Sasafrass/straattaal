@@ -66,7 +66,7 @@ class Word(db.Model):
     word = db.Column(db.String(56))
     model_id = db.Column(db.Integer, db.ForeignKey("model.id"))
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-    meanings = db.relationship("Meaning", backref="meaning", lazy="dynamic")
+    meanings = db.relationship("Meaning", backref="word_meaning", lazy="dynamic")
 
     def __repr__(self):
         """Instructions on how to display or print a Word database model."""
@@ -78,7 +78,7 @@ class Model(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     word = db.Column(db.String(64))
-    words = db.relationship("Word", backref="word", lazy="dynamic")
+    words = db.relationship("Word", backref="model_word", lazy="dynamic")
 
 
 class Group(db.Model):
