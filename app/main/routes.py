@@ -59,15 +59,21 @@ def index():
         # Persist word and meaning to database.
         slang_word = session.get("slang_word", None)
         word_type = session.get("model_type", None)
+        meaning = meaning_form.meaning.data
         user_id = current_user.get_id()
 
         if not slang_word:
             flash("You haven't generated a slang word yet...")
             return redirect(url_for("main.index"))
 
+        # TODO: Change this piece of database logic to resemble updates to schema.
+        # 1. Check if word_id is in Word table.
+            # 1a. If not, add the word to the Word table.
+            # 1b. If yes, retrieve the id for this word as word_id.
+        # 2. Check in model table whether the current model type already exists
         word_db_model = Word(
             word=slang_word,
-            meaning=meaning_form.meaning.data,
+            meaning=meaning,
             type=word_type,
             user_id=user_id,
         )
