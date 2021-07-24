@@ -77,7 +77,7 @@ class Model(db.Model):
     """Implement a database model for the type of model used to generate the word."""
 
     id = db.Column(db.Integer, primary_key=True)
-    model = db.Column(db.String(64))
+    model_type = db.Column(db.String(64))
     words = db.relationship("Word", backref="model_word", lazy="dynamic")
 
 
