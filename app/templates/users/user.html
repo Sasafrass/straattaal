@@ -12,10 +12,10 @@
             <th style="text-align:left">Word</th>
             <th style="text-align:left">Meaning</th>
         </thead>
-        {% for word in words %}
+        {% for word_meaning in word_meanings %}
           <tr>
-              <td>{{ word.word }}</td>
-              <td>{{ word.meaning }}</td>
+              <td>{{ word_meaning.word }}</td>
+              <td>{{ word_meaning.meaning }}</td>
           </tr>
         {% endfor %}
     </table>
