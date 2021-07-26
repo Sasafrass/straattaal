@@ -2,7 +2,7 @@
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user, login_required
 from app import db
-from app.models import Meaning, User, Word
+from app.models import Meaning, User, Word, Model
 from app.users import bp
 
 
@@ -33,8 +33,9 @@ def users(username):
     # To get both meaning and the actual word, we have to join the meaning and word tables.
     word_meanings = Meaning.query\
         .join(Word, Meaning.word_id==Word.id)\
-        .add_columns(Word.word, Meaning.meaning)\
         .filter_by(user_id=user_id)\
+        .join(Model, Word.model_id==Model.id)\
+        .add_columns(Word.word, Meaning.meaning, Model.model_type)\
         .paginate(page, WORDS_PER_PAGE, False)
 
     raw_sql_meanings = None
