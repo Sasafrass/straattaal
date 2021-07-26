@@ -29,7 +29,11 @@ def create_app(config_class=Config):
 
     # Initialize the Flask extensions.
     db.init_app(app)
-    migrate.init_app(app, db)
+    with app.app_context():
+        if db.engine.url.drivername == 'sqlite':
+            migrate.init_app(app, db, render_as_batch=True)
+        else:
+            migrate.init_app(app, db)
     login.init_app(app)
     sess.init_app(app)
 
