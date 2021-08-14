@@ -2,11 +2,12 @@
 # import requests
 from flask import flash, redirect, render_template, session, url_for
 from flask_login import login_required, current_user
+from wtforms.validators import ValidationError
 from app import db
 from app.api.slang import generate_slang_internal
 from app.main import bp
 from app.main.forms import GenerateSlangForm, MeaningForm, ChooseModelField
-from app.models import Word
+from app.models import Meaning, Model, Word
 
 
 @bp.route("/", methods=["GET", "POST"])
@@ -58,20 +59,54 @@ def index():
 
         # Persist word and meaning to database.
         slang_word = session.get("slang_word", None)
-        word_type = session.get("model_type", None)
+        model_type = session.get("model_type", None)
+        meaning = meaning_form.meaning.data
         user_id = current_user.get_id()
 
         if not slang_word:
             flash("You haven't generated a slang word yet...")
             return redirect(url_for("main.index"))
 
-        word_db_model = Word(
-            word=slang_word,
-            meaning=meaning_form.meaning.data,
-            type=word_type,
+        # TODO: Refactor this database persistence functionality to a separate method.
+        # Check if our model_type already exists in database, if not: create.
+        model = Model.query.filter_by(model_type=model_type).first()
+        if model is None:
+            model_db_model = Model(
+                model_type=model_type
+            )
+            db.session.add(model_db_model)
+            db.session.commit()
+            model = Model.query.filter_by(model_type=model_type).first()
+            # Check for persistence:
+            # TODO: Potentially flush and/or refresh db session.
+            if model is None:
+                raise ValidationError("Model should've been added. Please flush or refresh.")
+        model_id = model.id
+
+        # Check if our word already exists in database, if not: create.
+        word = Word.query.filter_by(word=slang_word).first()
+        if word is None:
+            word_db_model = Word(
+                word=slang_word,
+                model_id=model_id,
+                user_id=user_id,
+            )
+            db.session.add(word_db_model)
+            db.session.commit()
+            # Check for persistence:
+            # TODO: Potentially flush and/or refresh db session.
+            word = Word.query.filter_by(word=slang_word).first()
+            if model is None:
+                raise ValidationError("Word should've been added. Please flush or refresh.")
+        word_id = word.id
+
+        # Update the meaning table.
+        meaning_db_model = Meaning(
+            meaning=meaning,
             user_id=user_id,
+            word_id=word_id,
         )
-        db.session.add(word_db_model)
+        db.session.add(meaning_db_model)
         db.session.commit()
 
         del session["slang_word"]

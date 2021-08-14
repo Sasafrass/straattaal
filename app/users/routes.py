@@ -1,7 +1,8 @@
 """Module containing all the routes for the users blueprint."""
 from flask import redirect, render_template, request, url_for
 from flask_login import current_user, login_required
-from app.models import User, Word
+from app import db
+from app.models import Meaning, User, Word
 from app.users import bp
 
 
@@ -28,9 +29,24 @@ def users(username):
     user = User.query.filter_by(username=username).first_or_404()
     user_id = user.get_id()
     page = request.args.get("page", 1, type=int)
-    words = Word.query.filter_by(user_id=user_id).paginate(page, WORDS_PER_PAGE, False)
 
-    return render_template("users/user.html", user=user, words=words.items)
+    # To get both meaning and the actual word, we have to join the meaning and word tables.
+    word_meanings = Meaning.query\
+        .join(Word, Meaning.word_id==Word.id)\
+        .add_columns(Word.word, Meaning.meaning)\
+        .filter_by(user_id=user_id)\
+        .paginate(page, WORDS_PER_PAGE, False)
+
+    raw_sql_meanings = None
+    # raw_sql_meanings = db.session.execute('SELECT meaning, word, meaning.user_id ' \
+    #     'FROM meaning ' \
+    #     'INNER JOIN word ' \
+    #     'ON meaning.word_id = word.id')
+
+    if raw_sql_meanings:
+        return render_template("users/user.html", user=user, word_meanings=raw_sql_meanings)#.items)
+    else:
+        return render_template("users/user.html", user=user, word_meanings=word_meanings.items)
 
 
 # articles = (
