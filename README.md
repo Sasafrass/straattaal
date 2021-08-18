@@ -45,3 +45,10 @@ Instructions on how to run this application locally. If you don't have Postgres 
 * ```flask run```
 * You should now be able to access a fully working local copy at http://localhost:5000
 
+#### Run with Docker
+
+This project can also be run with Docker in the following way:
+
+* Create a .env file in the parent directory with the following variables: ```POSTGRES_USER=<postgres_user> POSTGRES_DB=<postgres_db> POSTGRES_PASSWORD=<postgres_password> PG_PORT=<postgres_port>``` (standard port is 5432)
+* Then build and run docker-compose with ```docker-compose up --build```
+* Database should be mounted to a volume, and thus data should be persisted between container restarts.
