@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: 'postgres:latest'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER} # Fetches from a .env file.
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  server:
+    build:
+      dockerfile: Dockerfile
+      context: ./
+    environment:
+      - PGUSER=${POSTGRES_USER}
+      - PGHOST=postgres
+      - PGDATABASE=${POSTGRES_DB}
+      - PGPASSWORD=${POSTGRES_PASSWORD}
+      - PGPORT=${PG_PORT}
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${PG_PORT}/${POSTGRES_DB}
+    ports:
+      - '5000:5000'
+    depends_on:
+      - db
+volumes:
+  postgres_data:
