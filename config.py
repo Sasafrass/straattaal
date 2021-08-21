@@ -16,3 +16,8 @@ class Config(object):
     ) or "sqlite:///" + os.path.join(basedir, "app.db")
     print(f"Database URI: {SQLALCHEMY_DATABASE_URI}")
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
+class TestConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = "sqlite://"

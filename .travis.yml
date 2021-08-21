@@ -3,7 +3,7 @@ services:
   - docker
 
 before_install:
-  - docker build -t sasafrass/straattaal -f Dockerfile .
+  - docker build -t sasafrass/straattaal-test -f Dockerfile.dev .
 
 script:
-  - docker run -e CI=true sasafrass/straattaal python tests.py
+  - docker run -e CI=true sasafrass/straattaal-test

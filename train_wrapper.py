@@ -31,7 +31,7 @@ def _run(**kwargs) -> None:
         v.build(
             prefix=kwargs["data_directory"],
             filename_datasets=kwargs["filename_datasets"],
-            filename_destination=kwargs["filename_vocab"]
+            filename_destination=kwargs["filename_vocab"],
         )
 
     # Build training set and dataloader.
