@@ -7,3 +7,15 @@ before_install:
 
 script:
   - docker run -e CI=true sasafrass/straattaal-test
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "straattaal"
+  env: "Straattaal-env"
+  bucket_name: "elasticbeanstalk-us-east-2-143519510875"
+  bucket_path: "straattaal" # Equal to our app.
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
