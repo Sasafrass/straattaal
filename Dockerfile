@@ -23,7 +23,5 @@ RUN chown -R slang:slang ./
 USER slang
 
 EXPOSE 5000
-# Should be changed to gunicorn I guess?
-#CMD ["flask", "run"] 
 
 ENTRYPOINT ["./boot.sh"]
