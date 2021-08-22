@@ -13,7 +13,7 @@ WORDS_PER_PAGE = 25
 @bp.route("/main")
 @login_required
 def main():
-    """Implement main route for the users blueprint. Redirects to the current user."""
+    """Implement main route for the users blueprint - redirects to the current user."""
     # Automatically redirect to the current user's profile.
     return redirect(url_for("users.users", username=current_user.username))
 
