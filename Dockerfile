@@ -7,6 +7,7 @@ WORKDIR /home/app
 COPY requirements.txt requirements.txt
 
 RUN python -m venv venv
+RUN apt-get install libpq-dev
 
 RUN venv/bin/pip install --no-cache-dir -r requirements.txt
 RUN venv/bin/pip install --no-cache-dir gunicorn
