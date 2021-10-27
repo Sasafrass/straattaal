@@ -1,4 +1,4 @@
-FROM python:3.6-alpine
+FROM python:3.8-slim-buster
 
 RUN useradd slang
 
@@ -7,7 +7,9 @@ WORKDIR /home/app
 COPY requirements.txt requirements.txt
 
 RUN python -m venv venv
-RUN apk add --virtual .build-deps gcc python-dev musl-dev postgresql-dev
+RUN apt-get update \
+    && apt-get -y install libpq-dev gcc \
+    && pip install psycopg2    
 
 RUN venv/bin/pip install --no-cache-dir -r requirements.txt
 RUN venv/bin/pip install --no-cache-dir gunicorn
