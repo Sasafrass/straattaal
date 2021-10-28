@@ -12,7 +12,7 @@ RUN apt-get update \
     && pip install psycopg2
 
 RUN mkdir ./piptmp
-RUN venv/bin/pip install TMPDIR=./piptmp --cache-dir=./piptmp --build ./piptmp -r requirements.txt
+RUN TMPDIR=./piptmp venv/bin/pip install --cache-dir="./piptmp" -r requirements.txt
 
 COPY app app
 COPY migrations migrations
