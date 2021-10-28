@@ -11,7 +11,7 @@ RUN apt-get update \
     && apt-get -y install libpq-dev gcc \
     && pip install psycopg2
 
-RUN venv/bin/pip install -r requirements.txt
+RUN venv/bin/pip install TMPDIR=/harkema/pip --cache-dir=/harkema/pip --build /harkema/pip -r requirements.txt
 
 COPY app app
 COPY migrations migrations
