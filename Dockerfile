@@ -11,6 +11,7 @@ RUN apt-get update \
     && apt-get -y install libpq-dev gcc \
     && pip install psycopg2
 
+RUN mkdir /harkema/pip
 RUN venv/bin/pip install TMPDIR=/harkema/pip --cache-dir=/harkema/pip --build /harkema/pip -r requirements.txt
 RUN venv/bin/pip install --no-cache-dir gunicorn
 
