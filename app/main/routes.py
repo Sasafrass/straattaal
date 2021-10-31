@@ -35,8 +35,16 @@ def index():
 
     # Persist model_type through re-clicking generate_slang and other refreshing
     if "model_type" in session:
-        model_form.select_model.object_data = session["model_type"]
-        model_form.select_model.data = session["model_type"]
+        model_type = session["model_type"]
+        model_form.select_model.object_data = model_type
+        model_form.select_model.data = model_type
+    # If we haven't seta single model_type, set default.
+    else:
+        model_type = model_form.select_model.default
+        session["model_type"] = model_type
+
+    # Change generate_slang_form button text.
+    generate_slang_form.submit_generate.label.text = generate_slang_form.set_button_text(model_type=model_type)
 
     if generate_slang_form.submit_generate.data and generate_slang_form.validate():
         # # TODO: Might be overkill to use an API call here rather than internal call.
@@ -52,6 +60,7 @@ def index():
         return render_template(
             "index.html",
             slang_word=slang_word,
+            model_type=model_type,
             **kwargs,
         )
 
@@ -113,10 +122,11 @@ def index():
 
         return render_template(
             "index.html",
+            model_type=model_type,
             **kwargs,
         )
 
-    return render_template("index.html", slang_word="", **kwargs)
+    return render_template("index.html", slang_word="", model_type=model_type, **kwargs)
 
 
 @bp.route("/set/")

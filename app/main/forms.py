@@ -6,7 +6,17 @@ from wtforms import StringField, SubmitField, SelectField
 class GenerateSlangForm(FlaskForm):
     """Submit form to generate a new slang word."""
 
-    submit_generate = SubmitField("Generate Slang")
+    def set_button_text(self, model_type: str) -> str:
+        """Build the text that will be set in the button depending on model type.
+        
+        Args:
+            model_type: Type of the model that is being used.
+        """
+
+        button_text = f"Generate {model_type.capitalize()} Word"
+        return button_text
+
+    submit_generate = SubmitField()
 
 
 class ChooseModelField(FlaskForm):
