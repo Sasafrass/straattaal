@@ -50,6 +50,8 @@ Instructions on how to run this application locally. If you don't have Postgres 
 
 This project can also be run with Docker in the following way:
 
-* Create a .env file in the parent directory with the following variables: ```POSTGRES_USER=<postgres_user> POSTGRES_DB=<postgres_db> POSTGRES_PASSWORD=<postgres_password> PG_PORT=<postgres_port>``` (standard port is 5432)
-* Then build and run docker-compose with ```docker-compose up --build```
+* Create a .env file in the parent directory with the following variables: ```POSTGRES_USER=<postgres_user> POSTGRES_DB=<postgres_db> POSTGRES_PASSWORD=<postgres_password> PG_PORT=<postgres_port>``` (standard port is 5432).
+  * You should be able to set any combination of POSTGRES_USER, POSTGRES_DB, and POSTGRES_PASSWORD as it will use the same combination for both the environment variables in the server docker container hosting the Flask app as for the Postgres container.
+* Then build and run docker-compose with ```docker-compose -f docker-compose-dev.yml up --build```. This will build a full Docker Compose setup with the (latest) Dockerfile defined in your branch or folder.
 * Database should be mounted to a volume, and thus data should be persisted between container restarts.
+* Navigate to http://127.0.0.1:5000. Your local port 5000 should be forwarded to the Docker Compose network. 
