@@ -9,6 +9,9 @@ from app.main import bp
 from app.main.forms import GenerateSlangForm, MeaningForm, ChooseModelField
 from app.models import Meaning, Model, Word
 
+@bp.route("/", methods=["GET", "POST"])
+def entrypoint():
+    return render_template("entrypoint.html")
 
 @bp.route("/", methods=["GET", "POST"])
 @bp.route("/index", methods=["GET", "POST"])
