@@ -3,18 +3,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="create-group">
-        Create a group here.
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.group_name.label }}<br>
-            {{ form.group_name(size=32) }}<br>
-            {% for error in form.group_name.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.submit() }}</p>
-    </form>
+    <div class="col-md-4">
+        <div class="create-group">
+            Create a group here.
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+
+                <!-- Group name field -->
+                <div class="form-group" style="margin-left: 10px; margin-right: 10px;">
+                    {{ form.group_name.label }}
+                    {{ form.group_name(
+                        class="form-control",
+                        placeholder="Enter group name"
+                    ) }}    
+                    {% for error in form.group_name.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+
+                <!-- Submit field -->
+                <div style="margin-left: 10px; margin-right: 10px;">
+                    {{ form.submit(
+                        class="btn btn-primary"
+                    ) }}
+                </div>
+
+            </form>
+        </div>
     </div>
 {% endblock %}

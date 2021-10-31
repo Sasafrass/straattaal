@@ -2,24 +2,49 @@
 
 {% block content %}
     <h1>Sign In</h1>
-    <form action="" method="post" novalidate>
+    <div class="col-md-4">
+        <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}<br>
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}<br>
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit() }}</p>
-    </form>
-    <p>New User? <a href="{{ url_for('auth.register') }}">Click to Register!</a></p>
+
+            <!-- Username field-->
+            <div class="form-group">
+                {{ form.username.label }}
+                {{ form.username(
+                    class="form-control",
+                    placeholder="Enter username"
+                ) }}    
+                {% for error in form.username.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <!-- Password field -->
+            <div class="form-group">
+                {{ form.password.label }}
+                {{ form.password(
+                    class="form-control",
+                    placeholder="Password"
+                ) }}   
+                {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <!-- Remember Me field -->
+            <div class="form-check">
+                {{ form.remember_me.label(
+                    class="form-check-label"
+                ) }}
+                {{ form.remember_me(
+                    class="form-check-input"
+                ) }}   
+            </div>
+
+            <!-- Submit button rendering with bootstrap and WTForms-->
+            {{ form.submit(
+                class="btn btn-primary"
+            ) }}
+        </form>
+        <p>New User? <a href="{{ url_for('auth.register') }}">Click to Register!</a></p>
+    </div>
 {% endblock %}

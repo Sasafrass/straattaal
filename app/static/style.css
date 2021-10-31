@@ -1,3 +1,7 @@
+body {
+    color: #61dafb !important;
+    background: #282c34 !important;
+}
 div.main {
     margin: 10px;
 }

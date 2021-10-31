@@ -2,52 +2,84 @@
 
 {% block content %}
     <!-- Main index content -->
-    {% if current_user.is_anonymous %}
-    <h1>Hi, Anonymous user!</h1>
-    {% else %}
-    <h1>Hi, {{ current_user.username }}!</h1>
-    {% if current_user.groups %}
-    <p>Your current groups are {{ current_user.groups }}</p>
-    {% else %}
-    <p>You do not have any groups yet.</p>
-    {% endif %}
-    {% endif %}
+    <div class="col-md-4">
+        {% if current_user.is_anonymous %}
+        <h1>Hi, Anonymous user!</h1>
+        {% else %}
+        <h1>Hi, {{ current_user.username }}!</h1>
+        {% if current_user.groups %}
+        <p>Your current groups are {{ current_user.groups }}</p>
+        {% else %}
+        <p>You do not have any groups yet.</p>
+        {% endif %}
+        {% endif %}
 
-    <!-- Generate Model selector form -->
-    <form action="" method="post" novalidate>
-        {{ model_form.hidden_tag() }}
-        {{ model_form.select_model() }}
-        <input type="submit" value="Change model">
-    </form>
-    
-    <!-- Generate Slang Form -->
-    <form action="" method="post" novalidate>
-        {{ generate_slang_form.hidden_tag() }}
-        <p>{{ generate_slang_form.submit_generate() }}</p>
-    </form>
-    {% if slang_word %}
-    <h2>Your new slang word is: </h2>
-    <div id="the_slang_word">{{ slang_word }}</div>
-    {% endif %}
+        <!-- Generate Model selector form -->
+        <form action="" method="post" novalidate>
+            {{ model_form.hidden_tag() }}
+            <div class="row">
+                <div class="col-xs-6">
+                    {{ model_form.select_model(
+                        class="form-control form-control-lg"
+                    ) }}
+                </div>
+                <div class="col-xs-6">
+                    <input type="submit" value="Change model" class="btn btn-warning">
+                </div>
+            </div>
+        </form>
+        
+        <!-- Generate Slang Form -->
+        <form action="" method="post" novalidate>
+            {{ generate_slang_form.hidden_tag() }}
+            <!-- <p>{{ generate_slang_form.submit_generate() }}</p> -->
+            {{ generate_slang_form.submit_generate(
+                class="btn btn-primary btn-lg"
+            ) }}
+        </form>
+        {% if slang_word %}
+        <h2>Your new slang word is: </h2>
+        <div id="the_slang_word">{{ slang_word }}</div>
+        {% endif %}
 
-    <!-- Meaning Form -->
-    <h2>Save the meaning for the current slang word: </h2>
-    <form action="" method="post" novalidate>
-        {{ meaning_form.hidden_tag() }}
-        <p>
-            {{ meaning_form.word.label }}<br>
-            {{ meaning_form.word(size=32, disabled=True) }}<br>
-            {% for error in meaning_form.word.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ meaning_form.meaning.label }}<br>
-            {{ meaning_form.meaning(size=32) }}<br>
-            {% for error in meaning_form.meaning.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ meaning_form.submit_meaning() }}</p>
-    </form>
+        <!-- Meaning Form -->
+        <h2>Save the meaning for the current slang word: </h2>
+        <form action="" method="post" novalidate>
+            {{ meaning_form.hidden_tag() }}
+            <!-- <p>
+                {{ meaning_form.word.label }}<br>
+                {{ meaning_form.word(size=32, disabled=True) }}<br>
+                {% for error in meaning_form.word.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p> -->
+
+            <!-- Word component of meaning form -->
+            <div class="form-group">
+                {{ meaning_form.word.label }}
+                {{ meaning_form.word(
+                    class="form-control",
+                    disabled=True
+                ) }}    
+                {% for error in meaning_form.word.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+
+            <!-- Meaning component of meaning form -->
+            <div class="form-group">
+                {{ meaning_form.meaning.label }}
+                {{ meaning_form.meaning(
+                    class="form-control",
+                    placeholder="Enter meaning or leave blank"
+                ) }}    
+                {% for error in meaning_form.meaning.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </div>
+            {{ meaning_form.submit_meaning(
+                class="btn btn-primary"
+            ) }}
+        </form>
+    </div>
 {% endblock %}
