@@ -2,10 +2,12 @@
 from flask import Flask
 from flask_session import Session
 from config import Config
+from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
+bootstrap = Bootstrap()
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
@@ -34,6 +36,7 @@ def create_app(config_class=Config):
             migrate.init_app(app, db, render_as_batch=True)
         else:
             migrate.init_app(app, db)
+    bootstrap.init_app(app)
     login.init_app(app)
     sess.init_app(app)
 
